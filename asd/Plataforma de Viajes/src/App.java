@@ -2,6 +2,7 @@ import javax.swing.JFrame;
 
 public class App {
 //funciona git? who knows
+//mando otro
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		InterfazLogueo login = new InterfazLogueo(frame);
