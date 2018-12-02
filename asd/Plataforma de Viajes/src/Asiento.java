@@ -2,6 +2,8 @@
 public class Asiento {
 	
 	private int id;
+
+//comentario cancer añadido al git
 	
 	public boolean isDisponible() {
 		return disponible;

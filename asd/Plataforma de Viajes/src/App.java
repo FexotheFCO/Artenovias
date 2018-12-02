@@ -1,7 +1,7 @@
 import javax.swing.JFrame;
 
 public class App {
-
+//funciona git? who knows
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		InterfazLogueo login = new InterfazLogueo(frame);
