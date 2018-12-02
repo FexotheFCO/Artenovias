@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="Plataforma/Plataforma de Viajes/src"/>
+	<classpathentry kind="lib" path="Plataforma/DateChooser.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector J 8.0/mysql-connector-java-8.0.13.jar"/>
+	<classpathentry kind="lib" path="C:/Users/agust/Downloads/commons-codec-1.11/commons-codec-1.11.jar"/>
+	<classpathentry kind="output" path="Plataforma/Plataforma de Viajes/bin"/>
+</classpath>
