@@ -4,7 +4,6 @@ public class Vestido {
 	
 	//Atributos
 	private int id;
-	private Cliente cliente;
 	
 	//Medidas
 	private int talleDelantero;
@@ -34,7 +33,41 @@ public class Vestido {
 	private int puño;
 	private int largoCascada;
 	
-
+	public Vestido(int id, int talleDelantero, int talleTrasero, int hombro, int alturaHombro,
+			int espalda, int pecho, int pinza, int bajoSisa, int busto, int bustoDelantero, int contornoBustoSup,
+			int contornoBustoInf, int centroBusto, int cintura, int cadera, int escoteDelantero, int escoteTrasero,
+			int pico, int largoFaldaLarga, int largoFaldaCorta, int arrastre, int largo, int ancho, int puño,
+			int largoCascada) {
+		super();
+		this.id = id;
+		//talles
+		this.talleDelantero = talleDelantero;
+		this.talleTrasero = talleTrasero;
+		this.hombro = hombro;
+		this.alturaHombro = alturaHombro;
+		this.espalda = espalda;
+		this.pecho = pecho;
+		this.pinza = pinza;
+		this.bajoSisa = bajoSisa;
+		this.busto = busto;
+		this.bustoDelantero = bustoDelantero;
+		this.contornoBustoSup = contornoBustoSup;
+		this.contornoBustoInf = contornoBustoInf;
+		this.centroBusto = centroBusto;
+		this.cintura = cintura;
+		this.cadera = cadera;
+		this.escoteDelantero = escoteDelantero;
+		this.escoteTrasero = escoteTrasero;
+		this.pico = pico;
+		this.largoFaldaLarga = largoFaldaLarga;
+		this.largoFaldaCorta = largoFaldaCorta;
+		this.arrastre = arrastre;
+		this.largo = largo;
+		this.ancho = ancho;
+		this.puño = puño;
+		this.largoCascada = largoCascada;
+	}
+	
 	public int getTalleDelantero() {
 		return talleDelantero;
 	}
@@ -233,14 +266,6 @@ public class Vestido {
 
 	public void setLargoCascada(int largoCascada) {
 		this.largoCascada = largoCascada;
-	}
-
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
 	}
 
 	public int getId() {

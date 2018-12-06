@@ -21,7 +21,7 @@ public class Cliente {
 		this.telefono = telefono;
 		this.telefono2 = telefono2;
 		this.edad = edad;
-		vestido = new Vestido();
+		vestido = new Vestido(this.id,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 	}
 
 	public int getTelefono() {
