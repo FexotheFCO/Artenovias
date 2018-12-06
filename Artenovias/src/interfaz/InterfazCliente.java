@@ -140,6 +140,7 @@ public class InterfazCliente extends JPanel {
 		lblVestido.setBounds(11, 317, 46, 14);
 		add(lblVestido);
 		
+		//TEST1
 		panel_1.setVisible(false);
 		//Fin Editar
 		
