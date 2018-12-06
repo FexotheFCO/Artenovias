@@ -22,6 +22,7 @@ public class InterfazCliente extends JPanel {
     
 	public InterfazCliente(JFrame frame,Cliente cliente) {
 		setLayout(null);
+		frame.setBounds(0, 0, 260, 400);
 		
 		//Usuario
 		JLabel lblNombre = new JLabel("Nombre");
@@ -148,6 +149,7 @@ public class InterfazCliente extends JPanel {
 		btnVestido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setContentPane(new InterfazVestido(frame,cliente.getVestido()));
+				frame.setVisible(true);
 			}
 		});
 		//Boton cancelar

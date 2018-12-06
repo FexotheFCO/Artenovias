@@ -29,6 +29,7 @@ public class InterfazMostrarClientes extends JPanel {
 	 */
 	public InterfazMostrarClientes(JFrame frame) {
 		setLayout(null);
+		frame.setBounds(0,0,440,350);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 36, 266, 253);
