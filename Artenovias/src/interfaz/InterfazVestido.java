@@ -41,7 +41,7 @@ public class InterfazVestido extends JPanel {
 	public InterfazVestido(JFrame frame,Vestido vestido) {
 		setLayout(null);
 		frame.setBounds(0,0,435,775);
-		
+		//test1
 		
 		//Labels Fijos
 		JLabel lblVestido = new JLabel("Vestido");
