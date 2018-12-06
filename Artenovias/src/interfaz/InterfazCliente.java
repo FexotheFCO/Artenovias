@@ -7,6 +7,7 @@ import javax.swing.JTextField;
 
 import dao.DaoCliente;
 import modelo.Cliente;
+import modelo.Vestido;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -136,13 +137,19 @@ public class InterfazCliente extends JPanel {
 		btnConfirmar.setBounds(10, 195, 119, 23);
 		panel_1.add(btnConfirmar);
 		
-		JLabel lblVestido = new JLabel("Vestido");
-		lblVestido.setBounds(11, 317, 46, 14);
-		add(lblVestido);
+		JButton btnVestido = new JButton("Vestido");
+		btnVestido.setBounds(10, 311, 89, 23);
+		add(btnVestido);
 		
 		panel_1.setVisible(false);
 		//Fin Editar
 		
+		//Boton Vestido
+		btnVestido.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setContentPane(new InterfazVestido(frame,cliente.getVestido()));
+			}
+		});
 		//Boton cancelar
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

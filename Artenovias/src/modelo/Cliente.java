@@ -10,7 +10,7 @@ public class Cliente {
 	private int telefono;
 	private int telefono2;
 	private int edad;
-	private ArrayList<Vestido>misVestidos;
+	private Vestido vestido;
 	
 	public Cliente(int id, String nombre, String apellido, String mail, int telefono, int telefono2, int edad) {
 		super();
@@ -21,6 +21,7 @@ public class Cliente {
 		this.telefono = telefono;
 		this.telefono2 = telefono2;
 		this.edad = edad;
+		vestido = new Vestido();
 	}
 
 	public int getTelefono() {
@@ -65,10 +66,13 @@ public class Cliente {
 	public void setEdad(int edad) {
 		this.edad = edad;
 	}
-	public ArrayList<Vestido> getMisVestidos() {
-		return misVestidos;
+
+	public Vestido getVestido() {
+		return vestido;
 	}
-	public void setMisVestidos(ArrayList<Vestido> misVestidos) {
-		this.misVestidos = misVestidos;
+
+	public void setVestido(Vestido vestido) {
+		this.vestido = vestido;
 	}
+	
 }
