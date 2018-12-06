@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector.J 5.1/mysql-connector-java-5.1.34-bin.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ydiaz/Desktop/Plataforma De Viajes copia segura Y WORKING-20181128T110540Z-001/Plataforma De Viajes copia segura Y WORKING/commons-codec-1.11.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ydiaz/Desktop/Plataforma De Viajes copia segura Y WORKING-20181128T110540Z-001/Plataforma De Viajes copia segura Y WORKING/DateChooser.jar"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
