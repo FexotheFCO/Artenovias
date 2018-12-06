@@ -141,6 +141,7 @@ public class InterfazCliente extends JPanel {
 		add(lblVestido);
 		
 		//TEST1
+		//tEST2
 		panel_1.setVisible(false);
 		//Fin Editar
 		
