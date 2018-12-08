@@ -1,6 +1,8 @@
 package modelo;
 import java.util.ArrayList;
 
+import dao.DaoVestido;
+
 public class Cliente {
 
 	private int id;
@@ -21,7 +23,23 @@ public class Cliente {
 		this.telefono = telefono;
 		this.telefono2 = telefono2;
 		this.edad = edad;
-		vestido = new Vestido(this.id,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+		Vestido	vestido = new Vestido(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+		DaoVestido daoVestido = new DaoVestido();
+		int idVestido = daoVestido.agregarVestido(vestido);
+		System.out.println("agregando vestido con id"+idVestido);
+		this.vestido = daoVestido.devolverUnVestido(idVestido);
+	}
+	
+	public Cliente(int id, String nombre, String apellido, String mail, int telefono, int telefono2, int edad, Vestido vestido) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.mail = mail;
+		this.telefono = telefono;
+		this.telefono2 = telefono2;
+		this.edad = edad;
+		this.vestido = vestido;
 	}
 
 	public int getTelefono() {
@@ -75,4 +93,7 @@ public class Cliente {
 		this.vestido = vestido;
 	}
 	
+	public int getIdVestido(){
+		return vestido.getId();
+	}
 }

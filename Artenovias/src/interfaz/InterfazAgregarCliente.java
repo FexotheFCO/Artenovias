@@ -26,6 +26,7 @@ public class InterfazAgregarCliente extends JPanel {
 	 */
 	public InterfazAgregarCliente(JFrame frame) {
 		setLayout(null);
+		frame.setBounds(0, 0, 300, 300);
 		
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setBounds(10, 11, 72, 14);
@@ -86,6 +87,7 @@ public class InterfazAgregarCliente extends JPanel {
 		btnAtras.setBounds(42, 195, 89, 23);
 		add(btnAtras);
 		
+		//agregar	
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//TODO Hacer un cartel para Confirmar

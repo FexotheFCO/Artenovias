@@ -37,13 +37,14 @@ public class DaoCliente {
 	public void agregarCliente(Cliente cliente){
 		conectar();
 		try {
-			PreparedStatement update = c.prepareStatement("INSERT INTO `artenovias`.`clientes` (`nombre`,`apellido`,`mail`,`edad`,`telefono1`,`telefono2`) VALUES (?,?,?,?,?,?);");
+			PreparedStatement update = c.prepareStatement("INSERT INTO `artenovias`.`clientes` (`nombre`,`apellido`,`mail`,`edad`,`telefono1`,`telefono2`,`idvestido`) VALUES (?,?,?,?,?,?,?);");
 			update.setString(1, cliente.getNombre());
 			update.setString(2, cliente.getApellido());
 			update.setString(3, cliente.getMail());
 			update.setInt(4, cliente.getEdad());
 			update.setInt(5, cliente.getTelefono());
 			update.setInt(6, cliente.getTelefono2());
+			update.setInt(7, cliente.getIdVestido());
 			update.executeUpdate();
 			update.close();
 		} catch (SQLException e) {
@@ -55,15 +56,14 @@ public class DaoCliente {
 	public void editarCliente(Cliente cliente) {
 		conectar();
 		try {
-			PreparedStatement update = c.prepareStatement("UPDATE `artenovias`.`clientes` SET `id` = (?), `nombre` = (?), `apellido` = (?), `mail` = (?), `edad` = (?), `telefono1` = (?), `telefono2` = (?) WHERE `id` = (?);");
-			update.setInt(1, cliente.getId());
-			update.setString(2, cliente.getNombre());
-			update.setString(3, cliente.getApellido());
-			update.setString(4, cliente.getMail());
-			update.setInt(5, cliente.getEdad());
-			update.setInt(6, cliente.getTelefono());
-			update.setInt(7, cliente.getTelefono2());
-			update.setInt(8, cliente.getId());
+			PreparedStatement update = c.prepareStatement("UPDATE `artenovias`.`clientes` SET `nombre` = (?), `apellido` = (?), `mail` = (?), `edad` = (?), `telefono1` = (?), `telefono2` = (?) WHERE `id` = (?);");
+			update.setString(1, cliente.getNombre());
+			update.setString(2, cliente.getApellido());
+			update.setString(3, cliente.getMail());
+			update.setInt(4, cliente.getEdad());
+			update.setInt(5, cliente.getTelefono());
+			update.setInt(6, cliente.getTelefono2());
+			update.setInt(7, cliente.getId());
 			update.executeUpdate();
 			update.close();
 		} catch (SQLException e) {
@@ -80,9 +80,9 @@ public class DaoCliente {
 			String sql = "SELECT * FROM clientes";
 			Statement stmt = c.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-
+			DaoVestido daoVestido = new DaoVestido();
 			while (rs.next()) {
-				clientes.add(new Cliente(rs.getInt("id"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("mail"),rs.getInt("telefono1"),rs.getInt("telefono2"),rs.getInt("edad")));
+				clientes.add(new Cliente(rs.getInt("id"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("mail"),rs.getInt("telefono1"),rs.getInt("telefono2"),rs.getInt("edad"),daoVestido.devolverUnVestido(rs.getInt("id"))));
 				}
 
 		} catch (SQLException e) {
