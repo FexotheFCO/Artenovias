@@ -60,7 +60,7 @@ public class DaoVenta {
 			ResultSet rs = stmt.executeQuery();
 			DaoVestido daoVestido = new DaoVestido();
 			while (rs.next()) {
-				return new Cliente(rs.getInt("id"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("mail"),rs.getInt("telefono1"),rs.getInt("telefono2"),rs.getInt("edad"),daoVestido.devolverUnVestido(id));
+				return new Cliente(rs.getInt("id"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("mail"),rs.getInt("telefono1"),rs.getInt("telefono2"),rs.getInt("edad"),daoVestido.devolverUnVestido(rs.getInt("idvestido")));
 			}
 			
 		} catch(SQLException e) {

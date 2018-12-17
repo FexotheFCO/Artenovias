@@ -2,12 +2,16 @@ package interfaz;
 
 import javax.swing.JPanel;
 
+import modelo.Cliente;
 import modelo.Vestido;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+
+import dao.DaoVestido;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -38,7 +42,7 @@ public class InterfazVestido extends JPanel {
 	private JTextField textFieldPuño;
 	private JTextField textFieldLargoCascada;
 
-	public InterfazVestido(JFrame frame,Vestido vestido) {
+	public InterfazVestido(JFrame frame,Vestido vestido,Cliente cliente) {
 		setLayout(null);
 		frame.setBounds(0,0,435,775);
 		
@@ -154,6 +158,7 @@ public class InterfazVestido extends JPanel {
 		panelResultado.setLayout(null);
 		
 		//Textos
+		//TODO cambiar todo esto a spinners y hacer el actualizador de resultados
 		JLabel lblTextTalleDelantero = new JLabel(String.valueOf(vestido.getTalleDelantero()));
 		lblTextTalleDelantero.setBounds(10, 25, 160, 14);
 		panelResultado.add(lblTextTalleDelantero);
@@ -399,6 +404,17 @@ public class InterfazVestido extends JPanel {
 		btnEditar.setBounds(62, 666, 89, 23);
 		panelResultado.add(btnEditar);
 		
+		JButton btnAtras = new JButton("Atras");
+		btnAtras.setBounds(27, 678, 89, 23);
+		add(btnAtras);
+		
+		//Atras
+		btnAtras.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.setContentPane(new InterfazCliente(frame,cliente));
+			}
+		});
+		
 		//Cancelar
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -411,6 +427,38 @@ public class InterfazVestido extends JPanel {
 		btnConfirmar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//TODO Hacer el boton de confirmar y poner el update del DAO
+				int talleDelantero = Integer.valueOf(textFieldTalleDelantero.getText());
+				int talleTrasero = Integer.valueOf(textFieldTalleTrasero.getText());
+				int hombro = Integer.valueOf(textFieldHombro.getText());
+				int alturaHombro= Integer.valueOf(textFieldAlturaHombro.getText());
+				int espalda= Integer.valueOf(textFieldEspalda.getText());
+				int pecho = Integer.valueOf(textFieldPecho.getText());
+				int pinza = Integer.valueOf(textFieldPinza.getText());
+				int bajoSisa = Integer.valueOf(textFieldBajoSisa.getText());
+				int busto = Integer.valueOf(textFieldBusto.getText());
+				int bustoDelantero = Integer.valueOf(textFieldBustoDelantero.getText());
+				int contornoBustoSup = Integer.valueOf(textFieldContornoBustoSup.getText());
+				int contornoBustoInf = Integer.valueOf(textFieldContornoBustoInf.getText());
+				int centroBusto = Integer.valueOf(textFieldCentroBusto.getText());
+				int cintura = Integer.valueOf(textFieldCintura.getText());
+				int cadera = Integer.valueOf(textFieldCadera.getText());
+				int escoteDelantero = Integer.valueOf(textFieldEscoteDelantero.getText());
+				int escoteTrasero = Integer.valueOf(textFieldEscoteTrasero.getText());
+				int pico = Integer.valueOf(textFieldPico.getText());
+				int largoFaldaLarga = Integer.valueOf(textFieldLargoFaldaLarga.getText());
+				int largoFaldaCorta = Integer.valueOf(textFieldLargoFaldaCorta.getText());
+				int arrastre = Integer.valueOf(textFieldArrastre.getText());
+				//Manga
+				int largo = Integer.valueOf(textFieldLargo.getText());
+				int ancho = Integer.valueOf(textFieldAncho.getText());
+				int puño = Integer.valueOf(textFieldPuño.getText());
+				int largoCascada = Integer.valueOf(textFieldLargoCascada.getText());
+				DaoVestido daoVestido = new DaoVestido();
+				daoVestido.actualizarVestido(new Vestido(vestido.getId(),talleDelantero,talleTrasero,hombro,alturaHombro,espalda,pecho,pinza,bajoSisa,busto,bustoDelantero,
+						contornoBustoSup,contornoBustoInf,centroBusto,cintura,cadera,escoteDelantero,escoteTrasero,pico,largoFaldaLarga,largoFaldaCorta,arrastre,
+						largo,ancho,puño,largoCascada));
+				panelResultado.setVisible(true);
+				panelEdicion.setVisible(false);
 			}
 		});
 		
@@ -421,6 +469,10 @@ public class InterfazVestido extends JPanel {
 				panelEdicion.setVisible(true);
 			}
 		});
-
+	}
+	
+	//actualizar resultados
+	public void actualizarResultados() {
+		
 	}
 }

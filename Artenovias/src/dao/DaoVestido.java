@@ -98,5 +98,46 @@ public class DaoVestido {
 		desconectar();
 		return id;
 	}
+	
+	public void actualizarVestido(Vestido vestido) {
+		conectar();
+		
+		try {
+			String sql = "UPDATE `artenovias`.`vestidos` SET `talledelantero` = (?),`talletrasero` = (?),`hombro` = (?),`alturahombro` = (?),`espalda` = (?),`pecho` = (?),`pinza` = (?),`bajosisa` = (?),`busto` = (?),`bustodelantero` = (?),`contornobustosup` = (?),`contornobustoinf` = (?),`centrobusto` = (?),`cintura` = (?),`cadera` = (?),`escotedelantero` = (?),`escotetrasero` = (?),`pico` = (?),`largofaldalarga` = (?),`largofaldacorta` = (?),`arrastre` = (?),`largo` = (?),`ancho` = (?),`puño` = (?),`largocascada` = (?) WHERE `id` = (?);";
+			PreparedStatement update = c.prepareStatement(sql);
+			update.setInt(1, vestido.getTalleDelantero());
+			update.setInt(2, vestido.getTalleTrasero());
+			update.setInt(3, vestido.getHombro());
+			update.setInt(4, vestido.getAlturaHombro());
+			update.setInt(5, vestido.getEspalda());
+			update.setInt(6, vestido.getPecho());
+			update.setInt(7, vestido.getPinza());
+			update.setInt(8, vestido.getBajoSisa());
+			update.setInt(9, vestido.getBusto());
+			update.setInt(10, vestido.getBustoDelantero());
+			update.setInt(11, vestido.getContornoBustoSup());
+			update.setInt(12, vestido.getContornoBustoInf());
+			update.setInt(13, vestido.getCentroBusto());
+			update.setInt(14, vestido.getCintura());
+			update.setInt(15, vestido.getCadera());
+			update.setInt(16, vestido.getEscoteDelantero());
+			update.setInt(17, vestido.getEscoteTrasero());
+			update.setInt(18, vestido.getPico());
+			update.setInt(19, vestido.getLargoFaldaLarga());
+			update.setInt(20, vestido.getLargoFaldaCorta());
+			update.setInt(21, vestido.getArrastre());
+			update.setInt(22, vestido.getLargo());
+			update.setInt(23, vestido.getAncho());
+			update.setInt(24, vestido.getPuño());
+			update.setInt(25, vestido.getLargoCascada());
+			update.setInt(26, vestido.getId());
+			update.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		desconectar();
+	}
 
 }

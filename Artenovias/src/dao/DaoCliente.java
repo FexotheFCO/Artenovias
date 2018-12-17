@@ -82,7 +82,7 @@ public class DaoCliente {
 			ResultSet rs = stmt.executeQuery(sql);
 			DaoVestido daoVestido = new DaoVestido();
 			while (rs.next()) {
-				clientes.add(new Cliente(rs.getInt("id"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("mail"),rs.getInt("telefono1"),rs.getInt("telefono2"),rs.getInt("edad"),daoVestido.devolverUnVestido(rs.getInt("id"))));
+				clientes.add(new Cliente(rs.getInt("id"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("mail"),rs.getInt("telefono1"),rs.getInt("telefono2"),rs.getInt("edad"),daoVestido.devolverUnVestido(rs.getInt("idvestido"))));
 				}
 
 		} catch (SQLException e) {

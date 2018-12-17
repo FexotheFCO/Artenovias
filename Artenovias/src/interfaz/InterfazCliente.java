@@ -148,7 +148,7 @@ public class InterfazCliente extends JPanel {
 		//Boton Vestido
 		btnVestido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.setContentPane(new InterfazVestido(frame,cliente.getVestido()));
+				frame.setContentPane(new InterfazVestido(frame,cliente.getVestido(),cliente));//TODO PASAR DIRECTAMENTE CLIENTE Y DSP HACER GET VESTIDO
 				frame.setVisible(true);
 			}
 		});
