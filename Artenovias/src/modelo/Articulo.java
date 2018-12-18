@@ -5,6 +5,22 @@ public class Articulo {
 	private int id;
 	private int cantidad;
 	private String descripcion;
+	private String lugar;
+	
+	public Articulo(int id, int cantidad, String descripcion, String lugar) {
+		super();
+		this.id = id;
+		this.cantidad = cantidad;
+		this.descripcion = descripcion;
+		this.lugar = lugar;
+	}
+	
+	public String getLugar() {
+		return lugar;
+	}
+	public void setLugar(String lugar) {
+		this.lugar = lugar;
+	}
 	public int getId() {
 		return id;
 	}

@@ -10,6 +10,7 @@ import javax.swing.table.TableModel;
 import dao.DaoCliente;
 import dao.DaoVenta;
 import modelo.Cliente;
+import modelo.Empresa;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -27,7 +28,7 @@ public class InterfazMostrarClientes extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public InterfazMostrarClientes(JFrame frame) {
+	public InterfazMostrarClientes(JFrame frame,Empresa empresa) {
 		setLayout(null);
 		frame.setBounds(0,0,440,350);
 		
@@ -67,7 +68,7 @@ public class InterfazMostrarClientes extends JPanel {
 		btnAtras.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
-				frame.setContentPane(new InterfazEmpresa(frame));
+				frame.setContentPane(new InterfazEmpresa(frame,empresa));
 				frame.setVisible(true);
 			}
 		});
@@ -77,7 +78,7 @@ public class InterfazMostrarClientes extends JPanel {
 				int filaSelecionada = table.getSelectedRow();
 				Object valor = table.getValueAt(filaSelecionada, 0);
 				frame.setVisible(false);
-				frame.setContentPane(new InterfazCliente(frame,daoVenta.devolverCliente((int) valor)));
+				frame.setContentPane(new InterfazCliente(frame,daoVenta.devolverCliente((int) valor),empresa));
 				frame.setVisible(true);
 			}
 		});

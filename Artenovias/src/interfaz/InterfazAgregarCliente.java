@@ -6,6 +6,7 @@ import javax.swing.JTextField;
 
 import dao.DaoCliente;
 import modelo.Cliente;
+import modelo.Empresa;
 
 import javax.swing.JSpinner;
 import javax.swing.JButton;
@@ -24,7 +25,7 @@ public class InterfazAgregarCliente extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public InterfazAgregarCliente(JFrame frame) {
+	public InterfazAgregarCliente(JFrame frame,Empresa empresa) {
 		setLayout(null);
 		frame.setBounds(0, 0, 300, 300);
 		
@@ -106,7 +107,7 @@ public class InterfazAgregarCliente extends JPanel {
 		btnAtras.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frame.setVisible(false);
-				frame.setContentPane(new InterfazEmpresa(frame));
+				frame.setContentPane(new InterfazEmpresa(frame,empresa));
 				frame.setVisible(true);
 			}
 		});

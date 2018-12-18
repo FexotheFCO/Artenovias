@@ -3,6 +3,7 @@ package interfaz;
 import javax.swing.JPanel;
 
 import modelo.Cliente;
+import modelo.Empresa;
 import modelo.Vestido;
 
 import javax.swing.JFrame;
@@ -42,7 +43,7 @@ public class InterfazVestido extends JPanel {
 	private JTextField textFieldPuño;
 	private JTextField textFieldLargoCascada;
 
-	public InterfazVestido(JFrame frame,Vestido vestido,Cliente cliente) {
+	public InterfazVestido(JFrame frame,Vestido vestido,Cliente cliente,Empresa empresa) {
 		setLayout(null);
 		frame.setBounds(0,0,435,775);
 		
@@ -411,7 +412,7 @@ public class InterfazVestido extends JPanel {
 		//Atras
 		btnAtras.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.setContentPane(new InterfazCliente(frame,cliente));
+				frame.setContentPane(new InterfazCliente(frame,cliente,empresa));
 			}
 		});
 		

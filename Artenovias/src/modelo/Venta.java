@@ -8,7 +8,6 @@ public class Venta {
 	private Cliente cliente;
 	private int monto;
 	private Date fecha;
-	private ArrayList<Vestido>vestidos;
 	
 	public Venta(int id,Cliente cliente,int monto,Date fecha) {
 		this.id = id;
@@ -40,11 +39,5 @@ public class Venta {
 	}
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
-	}
-	public ArrayList<Vestido> getVestidos() {
-		return vestidos;
-	}
-	public void setVestidos(ArrayList<Vestido> vestidos) {
-		this.vestidos = vestidos;
 	}
 }

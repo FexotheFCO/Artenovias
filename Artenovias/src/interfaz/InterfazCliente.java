@@ -7,11 +7,16 @@ import javax.swing.JTextField;
 
 import dao.DaoCliente;
 import modelo.Cliente;
+import modelo.Empresa;
 import modelo.Vestido;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.JTextArea;
 
 @SuppressWarnings("serial")
 public class InterfazCliente extends JPanel {
@@ -19,8 +24,9 @@ public class InterfazCliente extends JPanel {
 	private JTextField textFieldApellido;
 	private JTextField textFieldMail;
     private	DaoCliente daoCliente = new DaoCliente();
+    private JTable table;
     
-	public InterfazCliente(JFrame frame,Cliente cliente) {
+	public InterfazCliente(JFrame frame,Cliente cliente,Empresa empresa) {
 		setLayout(null);
 		frame.setBounds(0, 0, 260, 400);
 		
@@ -138,17 +144,61 @@ public class InterfazCliente extends JPanel {
 		btnConfirmar.setBounds(10, 195, 119, 23);
 		panel_1.add(btnConfirmar);
 		
-		JButton btnVestido = new JButton("Vestido");
-		btnVestido.setBounds(10, 311, 89, 23);
-		add(btnVestido);
-		
-		panel_1.setVisible(false);
 		//Fin Editar
 		
+		JButton btnVestido = new JButton("Vestido");
+		btnVestido.setBounds(10, 225, 73, 23);
+		add(btnVestido);
+		
+		JButton btnAtras = new JButton("Atras");
+		btnAtras.setBounds(10, 11, 89, 23);
+		add(btnAtras);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(120, 345, 244, 148);
+		add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		JLabel lblRectificacion = new JLabel("Rectificacion");
+		lblRectificacion.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRectificacion.setLabelFor(table);
+		lblRectificacion.setBounds(120, 320, 244, 14);
+		add(lblRectificacion);
+		
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.setBounds(10, 379, 89, 23);
+		add(btnAgregar);
+		
+		JButton btnMostrar = new JButton("Mostrar");
+		btnMostrar.setBounds(10, 345, 89, 23);
+		add(btnMostrar);
+		
+		JButton btnAceptar = new JButton("Aceptar");
+		btnAceptar.setBounds(197, 667, 89, 23);
+		add(btnAceptar);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(120, 508, 244, 148);
+		add(scrollPane_1);
+		
+		JTextArea textArea = new JTextArea();
+		scrollPane_1.setViewportView(textArea);
+		
+		panel_1.setVisible(false);
+		
+		
+		//Boton Atras
+		btnAtras.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.setContentPane(new InterfazMostrarClientes(frame,empresa));
+			}
+		});
 		//Boton Vestido
 		btnVestido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.setContentPane(new InterfazVestido(frame,cliente.getVestido(),cliente));//TODO PASAR DIRECTAMENTE CLIENTE Y DSP HACER GET VESTIDO
+				frame.setContentPane(new InterfazVestido(frame,cliente.getVestido(),cliente,empresa));//TODO PASAR DIRECTAMENTE CLIENTE Y DSP HACER GET VESTIDO
 				frame.setVisible(true);
 			}
 		});
