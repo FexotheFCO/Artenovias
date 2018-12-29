@@ -1,6 +1,7 @@
 package modelo;
 import java.util.ArrayList;
 
+import dao.DaoTransacciones;
 import dao.DaoVestido;
 
 public class Cliente {
@@ -13,6 +14,7 @@ public class Cliente {
 	private int telefono2;
 	private int edad;
 	private Vestido vestido;
+	private ArrayList<Pago>pagos;
 	
 	public Cliente(int id, String nombre, String apellido, String mail, int telefono, int telefono2, int edad) {
 		super();
@@ -23,14 +25,15 @@ public class Cliente {
 		this.telefono = telefono;
 		this.telefono2 = telefono2;
 		this.edad = edad;
-		Vestido	vestido = new Vestido(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+		//Creacion del Vestido
+		Vestido	vestido = new Vestido(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 		DaoVestido daoVestido = new DaoVestido();
 		int idVestido = daoVestido.agregarVestido(vestido);
 		System.out.println("agregando vestido con id"+idVestido);
 		this.vestido = daoVestido.devolverUnVestido(idVestido);
 	}
 	
-	public Cliente(int id, String nombre, String apellido, String mail, int telefono, int telefono2, int edad, Vestido vestido) {
+	public Cliente(int id, String nombre, String apellido, String mail, int telefono, int telefono2, int edad, Vestido vestido,ArrayList<Pago>pagos) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -40,8 +43,23 @@ public class Cliente {
 		this.telefono2 = telefono2;
 		this.edad = edad;
 		this.vestido = vestido;
+		this.pagos = pagos;
+	}
+	
+	public void agregarPago(Pago pago) {
+		
 	}
 
+	public int getValorVestido() {
+		return vestido.getValor();
+	}
+	
+	public ArrayList<Pago> getPagos() {
+		return pagos;
+	}
+	public void setPagos(ArrayList<Pago> pagos) {
+		this.pagos = pagos;
+	}
 	public int getTelefono() {
 		return telefono;
 	}
@@ -84,16 +102,14 @@ public class Cliente {
 	public void setEdad(int edad) {
 		this.edad = edad;
 	}
-
 	public Vestido getVestido() {
 		return vestido;
 	}
-
 	public void setVestido(Vestido vestido) {
 		this.vestido = vestido;
 	}
-	
 	public int getIdVestido(){
 		return vestido.getId();
 	}
+	
 }

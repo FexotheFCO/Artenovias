@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import modelo.Cliente;
+import modelo.Cliente;
 
 public class DaoCliente {
 	
@@ -81,8 +82,9 @@ public class DaoCliente {
 			Statement stmt = c.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 			DaoVestido daoVestido = new DaoVestido();
+			DaoTransacciones daoTrans = new DaoTransacciones();
 			while (rs.next()) {
-				clientes.add(new Cliente(rs.getInt("id"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("mail"),rs.getInt("telefono1"),rs.getInt("telefono2"),rs.getInt("edad"),daoVestido.devolverUnVestido(rs.getInt("idvestido"))));
+				clientes.add(new Cliente(rs.getInt("id"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("mail"),rs.getInt("telefono1"),rs.getInt("telefono2"),rs.getInt("edad"),daoVestido.devolverUnVestido(rs.getInt("idvestido")),daoTrans.devolverTodosLosPagosDeCliente(rs.getInt("id"))));
 				}
 
 		} catch (SQLException e) {
@@ -91,5 +93,25 @@ public class DaoCliente {
 		
 		desconectar();
 		return clientes;
+	}
+	
+	public Cliente devolverCliente(int id) {
+		conectar();
+		try {
+			String sql = "SELECT * FROM clientes WHERE id = (?)";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			DaoVestido daoVestido = new DaoVestido();
+			DaoTransacciones daoTrans = new DaoTransacciones();
+			while (rs.next()) {
+				return new Cliente(rs.getInt("id"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("mail"),rs.getInt("telefono1"),rs.getInt("telefono2"),rs.getInt("edad"),daoVestido.devolverUnVestido(rs.getInt("idvestido")),daoTrans.devolverTodosLosPagosDeCliente(rs.getInt("id")));
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		desconectar();
+		return null;
 	}
 }

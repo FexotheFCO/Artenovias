@@ -23,7 +23,6 @@ public class InterfazMostrarClientes extends JPanel {
 	private JTable table;
 	private DaoCliente daoCliente = new DaoCliente();
 	private JTextField textField;
-	private DaoVenta daoVenta = new DaoVenta();
 
 	/**
 	 * Create the panel.
@@ -43,7 +42,12 @@ public class InterfazMostrarClientes extends JPanel {
 			new String[] {
 				"Id", "Apellido", "Nombre"
 			}
-		));
+		){
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }});
 		scrollPane.setViewportView(table);
 		
 		table.setModel(actualizarTabla(table.getModel()));
@@ -78,7 +82,8 @@ public class InterfazMostrarClientes extends JPanel {
 				int filaSelecionada = table.getSelectedRow();
 				Object valor = table.getValueAt(filaSelecionada, 0);
 				frame.setVisible(false);
-				frame.setContentPane(new InterfazCliente(frame,daoVenta.devolverCliente((int) valor),empresa));
+				Cliente cliente = daoCliente.devolverCliente((int) valor);
+				frame.setContentPane(new InterfazCliente(frame,cliente,empresa));
 				frame.setVisible(true);
 			}
 		});

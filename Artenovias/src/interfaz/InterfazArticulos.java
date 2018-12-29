@@ -152,7 +152,12 @@ public class InterfazArticulos extends JPanel {
 			new String[] {
 				"Id", "Descripcion", "Cantidad", "Lugar"
 			}
-		));
+		){
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }});
 		scrollPane.setViewportView(table);
 		
 		table.setModel(actualizarLista(table.getModel()));

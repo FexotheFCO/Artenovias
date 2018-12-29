@@ -39,11 +39,10 @@ public class DaoArticulo {
 	public void agregarArticulo(Articulo articulo) {
 		conectar();
 		try {
-			PreparedStatement update = c.prepareStatement("INSERT INTO `artenovias`.`articulos` (`id`,`cantidad`,`descripcion`,`lugar`) VALUES (?,?,?,?);");
-			update.setInt(1, articulo.getId());
-			update.setInt(2, articulo.getCantidad());
-			update.setString(3, articulo.getDescripcion());
-			update.setString(4, articulo.getLugar());
+			PreparedStatement update = c.prepareStatement("INSERT INTO `artenovias`.`articulos` (`cantidad`,`descripcion`,`lugar`) VALUES (?,?,?);");
+			update.setInt(1, articulo.getCantidad());
+			update.setString(2, articulo.getDescripcion());
+			update.setString(3, articulo.getLugar());
 			update.executeUpdate();
 			update.close();
 		} catch (SQLException e) {

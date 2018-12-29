@@ -4,6 +4,7 @@ public class Vestido {
 	
 	//Atributos
 	private int id;
+	private int valor;
 	
 	//Medidas
 	private int talleDelantero;
@@ -33,13 +34,14 @@ public class Vestido {
 	private int puño;
 	private int largoCascada;
 	
-	public Vestido(int id, int talleDelantero, int talleTrasero, int hombro, int alturaHombro,
+	public Vestido(int id, int valor, int talleDelantero, int talleTrasero, int hombro, int alturaHombro,
 			int espalda, int pecho, int pinza, int bajoSisa, int busto, int bustoDelantero, int contornoBustoSup,
 			int contornoBustoInf, int centroBusto, int cintura, int cadera, int escoteDelantero, int escoteTrasero,
 			int pico, int largoFaldaLarga, int largoFaldaCorta, int arrastre, int largo, int ancho, int puño,
 			int largoCascada) {
 		super();
 		this.id = id;
+		this.valor = valor;
 		//talles
 		this.talleDelantero = talleDelantero;
 		this.talleTrasero = talleTrasero;
@@ -68,6 +70,17 @@ public class Vestido {
 		this.largoCascada = largoCascada;
 	}
 	
+	
+	public int getValor() {
+		return valor;
+	}
+
+
+	public void setValor(int valor) {
+		this.valor = valor;
+	}
+
+
 	public int getTalleDelantero() {
 		return talleDelantero;
 	}

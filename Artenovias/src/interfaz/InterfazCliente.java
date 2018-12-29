@@ -6,8 +6,10 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 import dao.DaoCliente;
+import dao.DaoTransacciones;
 import modelo.Cliente;
 import modelo.Empresa;
+import modelo.Pago;
 import modelo.Vestido;
 
 import java.awt.event.ActionListener;
@@ -17,6 +19,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.JTextArea;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 @SuppressWarnings("serial")
 public class InterfazCliente extends JPanel {
@@ -24,12 +28,56 @@ public class InterfazCliente extends JPanel {
 	private JTextField textFieldApellido;
 	private JTextField textFieldMail;
     private	DaoCliente daoCliente = new DaoCliente();
-    private JTable table;
+    private JTable tableRect;
+    private JTable tablePagos;
+    private JTextField textFieldDescripcion;
+    JLabel labelNumeroFaltante = new JLabel("");
+    JLabel lblNumeroPagado = new JLabel("");
+    JLabel labelNumeroTotal = new JLabel("");
     
 	public InterfazCliente(JFrame frame,Cliente cliente,Empresa empresa) {
 		setLayout(null);
 		frame.setBounds(0, 0, 260, 400);
+		labelNumeroTotal.setText(String.valueOf(cliente.getValorVestido()));
 		
+		//Panels
+		JPanel panelPagos = new JPanel();
+		panelPagos.setBounds(374, 11, 327, 287);
+		add(panelPagos);
+		panelPagos.setLayout(null);
+		
+		JPanel panelEditar = new JPanel();
+		panelEditar.setBounds(93, 62, 139, 238);
+		add(panelEditar);
+		panelEditar.setLayout(null);
+		panelEditar.setVisible(false);
+		
+		JPanel panelCliente = new JPanel();
+		panelCliente.setBounds(93, 52, 139, 238);
+		add(panelCliente);
+		panelCliente.setLayout(null);
+		
+		JPanel panelAgregarPago = new JPanel();
+		panelAgregarPago.setBounds(374, 309, 327, 184);
+		add(panelAgregarPago);
+		panelAgregarPago.setLayout(null);
+		panelAgregarPago.setVisible(false);
+		
+		
+		//ScrolPanel
+		JScrollPane scrollPaneListaPagos = new JScrollPane();
+		scrollPaneListaPagos.setBounds(10, 11, 307, 136);
+		panelPagos.add(scrollPaneListaPagos);
+		
+		JScrollPane scrollPaneListaRect = new JScrollPane();
+		scrollPaneListaRect.setBounds(120, 345, 244, 148);
+		add(scrollPaneListaRect);
+		
+		JScrollPane scrollPaneTextoRect = new JScrollPane();
+		scrollPaneTextoRect.setBounds(120, 508, 244, 148);
+		add(scrollPaneTextoRect);
+		
+		//Labels
 		//Usuario
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setBounds(10, 75, 73, 14);
@@ -55,34 +103,66 @@ public class InterfazCliente extends JPanel {
 		lblEdad.setBounds(10, 125, 73, 14);
 		add(lblEdad);
 		
-		JPanel panel = new JPanel();
-		panel.setBounds(93, 52, 139, 238);
-		add(panel);
-		panel.setLayout(null);
-		
 		JLabel lblNombreUser = new JLabel("Nombre");
 		lblNombreUser.setBounds(10, 23, 119, 14);
-		panel.add(lblNombreUser);
+		panelCliente.add(lblNombreUser);
 		
 		JLabel lblApellidoUser = new JLabel("Apellido");
 		lblApellidoUser.setBounds(10, 48, 119, 14);
-		panel.add(lblApellidoUser);
+		panelCliente.add(lblApellidoUser);
 		
 		JLabel lblTelefonoUser = new JLabel("Telefono");
 		lblTelefonoUser.setBounds(10, 123, 119, 14);
-		panel.add(lblTelefonoUser);
+		panelCliente.add(lblTelefonoUser);
 		
 		JLabel lblMailUser = new JLabel("Mail");
 		lblMailUser.setBounds(10, 98, 119, 14);
-		panel.add(lblMailUser);
+		panelCliente.add(lblMailUser);
 		
 		JLabel lblTelefono2User = new JLabel("Telefono 2");
 		lblTelefono2User.setBounds(10, 148, 119, 14);
-		panel.add(lblTelefono2User);
+		panelCliente.add(lblTelefono2User);
 		
 		JLabel lblEdadUser = new JLabel("Edad");
 		lblEdadUser.setBounds(10, 73, 119, 14);
-		panel.add(lblEdadUser);
+		panelCliente.add(lblEdadUser);
+		
+		//Rectificacion
+		JLabel lblRectificacion = new JLabel("Rectificacion");
+		lblRectificacion.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRectificacion.setLabelFor(tableRect);
+		lblRectificacion.setBounds(120, 320, 244, 14);
+		add(lblRectificacion);
+		
+		//Pagos
+		JLabel lblPagado = new JLabel("Pagado");
+		lblPagado.setBounds(10, 158, 60, 14);
+		panelPagos.add(lblPagado);
+		
+		JLabel lblTotal = new JLabel("Total");
+		lblTotal.setBounds(10, 183, 60, 14);
+		panelPagos.add(lblTotal);
+		
+		JLabel lblFaltante = new JLabel("Faltante");
+		lblFaltante.setBounds(10, 208, 60, 14);
+		panelPagos.add(lblFaltante);
+		
+		lblNumeroPagado.setBounds(80, 158, 138, 14);
+		panelPagos.add(lblNumeroPagado);
+		
+		labelNumeroTotal.setBounds(80, 183, 138, 14);
+		panelPagos.add(labelNumeroTotal);
+		
+		labelNumeroFaltante.setBounds(80, 208, 138, 14);
+		panelPagos.add(labelNumeroFaltante);
+		
+		JLabel lblDescripcion = new JLabel("Descripcion");
+		lblDescripcion.setBounds(61, 29, 105, 14);
+		panelAgregarPago.add(lblDescripcion);
+		
+		JLabel lblMonto = new JLabel("Monto");
+		lblMonto.setBounds(61, 60, 105, 14);
+		panelAgregarPago.add(lblMonto);
 		
 		//SetText de Usuario
 		lblNombreUser.setText(cliente.getNombre());
@@ -92,59 +172,26 @@ public class InterfazCliente extends JPanel {
 		lblMailUser.setText(cliente.getMail());
 		lblEdadUser.setText(String.valueOf(cliente.getEdad()));
 		
+		//Botones
 		JButton btnEdit = new JButton("Edit");
 		btnEdit.setBounds(33, 173, 73, 23);
-		panel.add(btnEdit);
-		//Fin Usuarioo
+		panelCliente.add(btnEdit);
 		
-		//Editar User
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(93, 62, 139, 238);
-		add(panel_1);
-		panel_1.setLayout(null);
+		JButton btnAgregarPago_1 = new JButton("Agregar");
+		btnAgregarPago_1.setBounds(114, 98, 89, 23);
+		panelAgregarPago.add(btnAgregarPago_1);
 		
-		textFieldNombre = new JTextField();
-		textFieldNombre.setColumns(10);
-		textFieldNombre.setBounds(10, 11, 119, 14);
-		textFieldNombre.setText(cliente.getNombre());
-		panel_1.add(textFieldNombre);
-		
-		textFieldApellido = new JTextField();
-		textFieldApellido.setColumns(10);
-		textFieldApellido.setBounds(10, 36, 119, 14);
-		textFieldApellido.setText(cliente.getApellido());
-		panel_1.add(textFieldApellido);
-		
-		textFieldMail = new JTextField();
-		textFieldMail.setColumns(10);
-		textFieldMail.setBounds(10, 86, 119, 14);
-		textFieldMail.setText(cliente.getMail());
-		panel_1.add(textFieldMail);
-		
-		JSpinner spinnerEdad = new JSpinner();
-		spinnerEdad.setBounds(10, 61, 119, 14);
-		spinnerEdad.setValue((int) cliente.getEdad());
-		panel_1.add(spinnerEdad);
-		
-		JSpinner spinnerTelefono = new JSpinner();
-		spinnerTelefono.setBounds(10, 111, 119, 14);
-		spinnerTelefono.setValue((int) cliente.getTelefono());
-		panel_1.add(spinnerTelefono);
-		
-		JSpinner spinnerTelefono2 = new JSpinner();
-		spinnerTelefono2.setBounds(10, 136, 119, 14);
-		spinnerTelefono2.setValue((int) cliente.getTelefono2());
-		panel_1.add(spinnerTelefono2);
+		JButton btnCancelarPago = new JButton("Cancelar");
+		btnCancelarPago.setBounds(114, 132, 89, 23);
+		panelAgregarPago.add(btnCancelarPago);
 		
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.setBounds(10, 161, 119, 23);
-		panel_1.add(btnCancelar);
+		panelEditar.add(btnCancelar);
 		
 		JButton btnConfirmar = new JButton("Confirmar");
 		btnConfirmar.setBounds(10, 195, 119, 23);
-		panel_1.add(btnConfirmar);
-		
-		//Fin Editar
+		panelEditar.add(btnConfirmar);
 		
 		JButton btnVestido = new JButton("Vestido");
 		btnVestido.setBounds(10, 225, 73, 23);
@@ -153,19 +200,6 @@ public class InterfazCliente extends JPanel {
 		JButton btnAtras = new JButton("Atras");
 		btnAtras.setBounds(10, 11, 89, 23);
 		add(btnAtras);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(120, 345, 244, 148);
-		add(scrollPane);
-		
-		table = new JTable();
-		scrollPane.setViewportView(table);
-		
-		JLabel lblRectificacion = new JLabel("Rectificacion");
-		lblRectificacion.setHorizontalAlignment(SwingConstants.CENTER);
-		lblRectificacion.setLabelFor(table);
-		lblRectificacion.setBounds(120, 320, 244, 14);
-		add(lblRectificacion);
 		
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.setBounds(10, 379, 89, 23);
@@ -179,15 +213,131 @@ public class InterfazCliente extends JPanel {
 		btnAceptar.setBounds(197, 667, 89, 23);
 		add(btnAceptar);
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(120, 508, 244, 148);
-		add(scrollPane_1);
+		JButton btnAgregarPago = new JButton("Agregar");
+		btnAgregarPago.setBounds(228, 253, 89, 23);
+		panelPagos.add(btnAgregarPago);
 		
+		JButton btnBorrarPago = new JButton("Borrar");
+		btnBorrarPago.setBounds(129, 253, 89, 23);
+		panelPagos.add(btnBorrarPago);
+		
+		//TextField
+		textFieldNombre = new JTextField();
+		textFieldNombre.setColumns(10);
+		textFieldNombre.setBounds(10, 11, 119, 14);
+		textFieldNombre.setText(cliente.getNombre());
+		panelEditar.add(textFieldNombre);
+		
+		textFieldApellido = new JTextField();
+		textFieldApellido.setColumns(10);
+		textFieldApellido.setBounds(10, 36, 119, 14);
+		textFieldApellido.setText(cliente.getApellido());
+		panelEditar.add(textFieldApellido);
+		
+		textFieldMail = new JTextField();
+		textFieldMail.setColumns(10);
+		textFieldMail.setBounds(10, 86, 119, 14);
+		textFieldMail.setText(cliente.getMail());
+		panelEditar.add(textFieldMail);
+		
+		textFieldDescripcion = new JTextField();
+		textFieldDescripcion.setBounds(176, 26, 86, 20);
+		panelAgregarPago.add(textFieldDescripcion);
+		textFieldDescripcion.setColumns(10);
+		
+		//Spinners
+		JSpinner spinnerEdad = new JSpinner();
+		spinnerEdad.setBounds(10, 61, 119, 14);
+		spinnerEdad.setValue((int) cliente.getEdad());
+		panelEditar.add(spinnerEdad);
+		
+		JSpinner spinnerTelefono = new JSpinner();
+		spinnerTelefono.setBounds(10, 111, 119, 14);
+		spinnerTelefono.setValue((int) cliente.getTelefono());
+		panelEditar.add(spinnerTelefono);
+		
+		JSpinner spinnerTelefono2 = new JSpinner();
+		spinnerTelefono2.setBounds(10, 136, 119, 14);
+		spinnerTelefono2.setValue((int) cliente.getTelefono2());
+		panelEditar.add(spinnerTelefono2);
+		
+		JSpinner spinnerMonto = new JSpinner();
+		spinnerMonto.setBounds(176, 57, 86, 20);
+		panelAgregarPago.add(spinnerMonto);
+		
+		//Areas y Tablas
 		JTextArea textArea = new JTextArea();
-		scrollPane_1.setViewportView(textArea);
+		scrollPaneTextoRect.setViewportView(textArea);
 		
-		panel_1.setVisible(false);
+		tableRect = new JTable();
+		scrollPaneListaRect.setViewportView(tableRect);
 		
+		tablePagos = new JTable();
+		tablePagos.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Id", "Descripcion", "Monto", "Fecha"
+			}
+		) {
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }});
+		tablePagos.getColumnModel().getColumn(0).setPreferredWidth(25);
+		tablePagos.getColumnModel().getColumn(1).setPreferredWidth(100);
+		tablePagos.getColumnModel().getColumn(3).setPreferredWidth(50);
+		scrollPaneListaPagos.setViewportView(tablePagos);
+		tablePagos.setModel(actualizarTablaPagos(tablePagos.getModel(), cliente));
+		
+		
+		//Borrar Pago
+		btnBorrarPago.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int filaSelecionada = tablePagos.getSelectedRow();
+				Object valor = tablePagos.getValueAt(filaSelecionada, 0);
+				DaoTransacciones daoPagos = new DaoTransacciones();
+				daoPagos.borrarPago((int)valor);
+				actualizarTablaPagos(tablePagos.getModel(), cliente);
+				//TODO boton para confirmar
+			}
+		});
+		
+		//Agregar Pago
+		btnAgregarPago.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				panelPagos.setVisible(false);
+				panelAgregarPago.setVisible(true);
+			}
+		});
+		
+		//AgregarPago ABM
+		btnAgregarPago_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int monto = (int) spinnerMonto.getValue();
+				if(!textFieldDescripcion.getText().isEmpty() && monto > 0) {
+					Pago pago = new Pago(0, monto, textFieldDescripcion.getText());
+					DaoTransacciones daoPago = new DaoTransacciones();
+					daoPago.agregarPago(pago, cliente.getId());
+					tablePagos.setModel(actualizarTablaPagos(tablePagos.getModel(), cliente));
+					panelPagos.setVisible(true);
+					panelAgregarPago.setVisible(false);
+					textFieldDescripcion.setText(null);
+					spinnerMonto.setValue(0);
+				}
+			}
+		});
+		
+		//CancelarPago ABM
+		btnCancelarPago.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				panelPagos.setVisible(true);
+				panelAgregarPago.setVisible(false);
+				textFieldDescripcion.setText(null);
+				spinnerMonto.setValue(0);
+			}
+		});
 		
 		//Boton Atras
 		btnAtras.addActionListener(new ActionListener() {
@@ -195,37 +345,58 @@ public class InterfazCliente extends JPanel {
 				frame.setContentPane(new InterfazMostrarClientes(frame,empresa));
 			}
 		});
+		
 		//Boton Vestido
 		btnVestido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.setContentPane(new InterfazVestido(frame,cliente.getVestido(),cliente,empresa));//TODO PASAR DIRECTAMENTE CLIENTE Y DSP HACER GET VESTIDO
+				frame.setContentPane(new InterfazVestido(frame,cliente,empresa));//TODO PASAR DIRECTAMENTE CLIENTE Y DSP HACER GET VESTIDO
 				frame.setVisible(true);
 			}
 		});
+		
 		//Boton cancelar
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				panel_1.setVisible(false);
-				panel.setVisible(true);
+				panelEditar.setVisible(false);
+				panelCliente.setVisible(true);
 			}
 		});
+		
 		//Boton confirmar
 		btnConfirmar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Cliente n = new Cliente(cliente.getId(),textFieldNombre.getText(),textFieldApellido.getText(),textFieldMail.getText(),(int) spinnerTelefono.getValue(),(int) spinnerTelefono2.getValue(),(int)spinnerEdad.getValue());
 				//TODO aca deberiamos remplazar el cliente que usa esta interfaz por el actualizado, tambien actualizar los text fields y labels
 				daoCliente.editarCliente(n);
-				panel_1.setVisible(false);
-				panel.setVisible(true);
-			}
-		});
-		//Boton Editar
-		btnEdit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				panel_1.setVisible(true);
-				panel.setVisible(false);
+				panelEditar.setVisible(false);
+				panelCliente.setVisible(true);
 			}
 		});
 		
+		//Boton Editar
+		btnEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				panelEditar.setVisible(true);
+				panelCliente.setVisible(false);
+			}
+		});
+		
+	}
+	
+	DefaultTableModel actualizarTablaPagos(TableModel modelo, Cliente cliente) {
+		DefaultTableModel modeloSolucion = (DefaultTableModel) modelo;
+		modeloSolucion.setRowCount(0);
+		DaoTransacciones daoPago = new DaoTransacciones();
+		int totalPagado = 0;
+		for(Pago p : daoPago.devolverTodosLosPagosDeCliente(cliente.getId())) {
+			Object[] linea = {p.getId(),p.getDescripcion(),p.getMonto(),p.getFecha()};
+			modeloSolucion.addRow(linea);
+			totalPagado = totalPagado + p.getMonto();
+			}
+		int valorVestido = Integer.valueOf(labelNumeroTotal.getText());
+		labelNumeroTotal.setText(String.valueOf(cliente.getValorVestido()));
+		lblNumeroPagado.setText(String.valueOf(totalPagado));
+		labelNumeroFaltante.setText(String.valueOf(valorVestido - totalPagado));
+		return modeloSolucion;
 	}
 }

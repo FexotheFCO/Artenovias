@@ -12,7 +12,7 @@ import modelo.Cliente;
 import modelo.Venta;
 
 public class DaoVenta {
-	
+	/*
 	Connection c = null;
 
 	void conectar() {
@@ -87,5 +87,5 @@ public class DaoVenta {
 		}
 		desconectar();
 		return solucion;
-	}
+	}*/
 }

@@ -45,7 +45,7 @@ public class DaoVestido {
 			ResultSet rs = unVestido.executeQuery();
 			while(rs.next()) {
 				System.out.println("id del vestido devuelto"+ String.valueOf(rs.getInt("id")));
-				vestido = new Vestido(rs.getInt("id"),rs.getInt("talledelantero"),rs.getInt("talletrasero"),rs.getInt("hombro"),rs.getInt("alturahombro"),rs.getInt("espalda"),rs.getInt("pecho"),rs.getInt("pinza"),rs.getInt("bajosisa"),rs.getInt("busto"),rs.getInt("bustodelantero"),rs.getInt("contornobustosup"),rs.getInt("contornobustoinf"),rs.getInt("centrobusto"),rs.getInt("cintura"),rs.getInt("cadera"),rs.getInt("escotedelantero"),rs.getInt("escotetrasero"),rs.getInt("pico"),rs.getInt("largofaldalarga"),rs.getInt("largofaldacorta"),rs.getInt("arrastre"),rs.getInt("largo"),rs.getInt("ancho"),rs.getInt("puño"),rs.getInt("largocascada"));
+				vestido = new Vestido(rs.getInt("id"),rs.getInt("valor"),rs.getInt("talledelantero"),rs.getInt("talletrasero"),rs.getInt("hombro"),rs.getInt("alturahombro"),rs.getInt("espalda"),rs.getInt("pecho"),rs.getInt("pinza"),rs.getInt("bajosisa"),rs.getInt("busto"),rs.getInt("bustodelantero"),rs.getInt("contornobustosup"),rs.getInt("contornobustoinf"),rs.getInt("centrobusto"),rs.getInt("cintura"),rs.getInt("cadera"),rs.getInt("escotedelantero"),rs.getInt("escotetrasero"),rs.getInt("pico"),rs.getInt("largofaldalarga"),rs.getInt("largofaldacorta"),rs.getInt("arrastre"),rs.getInt("largo"),rs.getInt("ancho"),rs.getInt("puño"),rs.getInt("largocascada"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -58,7 +58,7 @@ public class DaoVestido {
 		int id = 0;
 		conectar();
 		try {
-			String sql = "INSERT INTO `artenovias`.`vestidos`(`talledelantero`,`talletrasero`,`hombro`,`alturahombro`,`espalda`,`pecho`,`pinza`,`bajosisa`,`busto`,`bustodelantero`,`contornobustosup`,`contornobustoinf`,`centrobusto`,`cintura`,`cadera`,`escotedelantero`,`escotetrasero`,`pico`,`largofaldalarga`,`largofaldacorta`,`arrastre`,`largo`,`ancho`,`puño`,`largocascada`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+			String sql = "INSERT INTO `artenovias`.`vestidos`(`talledelantero`,`talletrasero`,`hombro`,`alturahombro`,`espalda`,`pecho`,`pinza`,`bajosisa`,`busto`,`bustodelantero`,`contornobustosup`,`contornobustoinf`,`centrobusto`,`cintura`,`cadera`,`escotedelantero`,`escotetrasero`,`pico`,`largofaldalarga`,`largofaldacorta`,`arrastre`,`largo`,`ancho`,`puño`,`largocascada`,`valor`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 			PreparedStatement update = c.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 			update.setInt(1, vestido.getTalleDelantero());
 			update.setInt(2, vestido.getTalleTrasero());
@@ -85,6 +85,7 @@ public class DaoVestido {
 			update.setInt(23, vestido.getAncho());
 			update.setInt(24, vestido.getPuño());
 			update.setInt(25, vestido.getLargoCascada());
+			update.setInt(26, vestido.getValor());
 			update.executeUpdate();
 			//Consigo el id del vestido aniadido a la bd para luego crear el cliente con este vestido asignado
 			ResultSet rs = update.getGeneratedKeys();
@@ -103,7 +104,7 @@ public class DaoVestido {
 		conectar();
 		
 		try {
-			String sql = "UPDATE `artenovias`.`vestidos` SET `talledelantero` = (?),`talletrasero` = (?),`hombro` = (?),`alturahombro` = (?),`espalda` = (?),`pecho` = (?),`pinza` = (?),`bajosisa` = (?),`busto` = (?),`bustodelantero` = (?),`contornobustosup` = (?),`contornobustoinf` = (?),`centrobusto` = (?),`cintura` = (?),`cadera` = (?),`escotedelantero` = (?),`escotetrasero` = (?),`pico` = (?),`largofaldalarga` = (?),`largofaldacorta` = (?),`arrastre` = (?),`largo` = (?),`ancho` = (?),`puño` = (?),`largocascada` = (?) WHERE `id` = (?);";
+			String sql = "UPDATE `artenovias`.`vestidos` SET `talledelantero` = (?),`talletrasero` = (?),`hombro` = (?),`alturahombro` = (?),`espalda` = (?),`pecho` = (?),`pinza` = (?),`bajosisa` = (?),`busto` = (?),`bustodelantero` = (?),`contornobustosup` = (?),`contornobustoinf` = (?),`centrobusto` = (?),`cintura` = (?),`cadera` = (?),`escotedelantero` = (?),`escotetrasero` = (?),`pico` = (?),`largofaldalarga` = (?),`largofaldacorta` = (?),`arrastre` = (?),`largo` = (?),`ancho` = (?),`puño` = (?),`largocascada` = (?), `valor` = (?) WHERE `id` = (?);";
 			PreparedStatement update = c.prepareStatement(sql);
 			update.setInt(1, vestido.getTalleDelantero());
 			update.setInt(2, vestido.getTalleTrasero());
@@ -130,7 +131,8 @@ public class DaoVestido {
 			update.setInt(23, vestido.getAncho());
 			update.setInt(24, vestido.getPuño());
 			update.setInt(25, vestido.getLargoCascada());
-			update.setInt(26, vestido.getId());
+			update.setInt(26, vestido.getValor());
+			update.setInt(27, vestido.getId());
 			update.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
