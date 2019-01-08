@@ -47,7 +47,17 @@ public class Cliente {
 	}
 	
 	public void agregarPago(Pago pago) {
-		
+		pagos.add(pago);
+	}
+	
+	public void borrarPago(int idPago) {
+		Pago solucion = null;
+		for(Pago p : pagos) {
+			if(p.getId() == idPago) {
+				solucion = p;
+			}
+		}
+		pagos.remove(solucion);
 	}
 
 	public int getValorVestido() {

@@ -50,7 +50,7 @@ public class InterfazMostrarClientes extends JPanel {
 		    }});
 		scrollPane.setViewportView(table);
 		
-		table.setModel(actualizarTabla(table.getModel()));
+		table.setModel(actualizarTabla(table.getModel(),empresa));
 		
 		JLabel lblBuscador = new JLabel("Buscador");
 		lblBuscador.setBounds(10, 11, 79, 14);
@@ -72,7 +72,7 @@ public class InterfazMostrarClientes extends JPanel {
 		btnAtras.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
-				frame.setContentPane(new InterfazEmpresa(frame,empresa));
+				frame.setContentPane(new InterfazMenu(frame,empresa));
 				frame.setVisible(true);
 			}
 		});
@@ -91,10 +91,10 @@ public class InterfazMostrarClientes extends JPanel {
 
 	}
 	
-	DefaultTableModel actualizarTabla(TableModel modelo) {
+	DefaultTableModel actualizarTabla(TableModel modelo,Empresa empresa) {
 		DefaultTableModel modeloSolucion = (DefaultTableModel) modelo;
 		modeloSolucion.setRowCount(0);
-		for(Cliente c : daoCliente.devolverTodosLosClientes()) {
+		for(Cliente c : empresa.getClientes()) {
 			Object[] linea = {c.getId(),c.getApellido(),c.getNombre()};
 			modeloSolucion.addRow(linea);
 			}

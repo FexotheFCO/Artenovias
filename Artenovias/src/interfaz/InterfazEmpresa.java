@@ -1,60 +1,53 @@
 package interfaz;
+
 import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
+import modelo.Cliente;
 import modelo.Empresa;
+import modelo.Pago;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-@SuppressWarnings("serial")
 public class InterfazEmpresa extends JPanel {
+	private JTable table;
 
 	/**
 	 * Create the panel.
 	 */
-	public InterfazEmpresa(JFrame frame, Empresa empresa) {
+	public InterfazEmpresa() {
 		setLayout(null);
 		
-		JButton btnAgregar = new JButton("Agregar Cliente");
-		btnAgregar.setBounds(10, 11, 124, 23);
-		add(btnAgregar);
+		JLabel lblPagos = new JLabel("Pagos");
+		lblPagos.setBounds(10, 11, 46, 14);
+		add(lblPagos);
 		
-		JButton btnVerClientes = new JButton("Ver Clientes");
-		btnVerClientes.setBounds(10, 45, 124, 23);
-		add(btnVerClientes);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 36, 430, 182);
+		add(scrollPane);
 		
-		JButton btnArticulos = new JButton("Articulos");
-		btnArticulos.setBounds(10, 79, 124, 23);
-		add(btnArticulos);
-		
-		//Agregar Cliente
-		btnAgregar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				InterfazAgregarCliente agregar = new InterfazAgregarCliente(frame,empresa);
-				frame.setVisible(false);
-				frame.setContentPane(agregar);
-				frame.setVisible(true);
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Id", "Cliente", "Descripcion", "Monto", "Fecha"
 			}
-		});
-		//Ver Clientes
-		btnVerClientes.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				frame.setVisible(false);
-				frame.setContentPane(new InterfazMostrarClientes(frame,empresa));
-				frame.setVisible(true);
-			}
-		});
-		//Articulos
-		btnArticulos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				frame.setVisible(false);
-				frame.setContentPane(new InterfazArticulos(frame,empresa));
-				frame.setVisible(true);
-			}
-		});
+		));
+		table.getColumnModel().getColumn(0).setPreferredWidth(25);
+		scrollPane.setViewportView(table);
 
+	}
+	
+	DefaultTableModel actualizarTabla(TableModel modelo,Empresa empresa) {
+		DefaultTableModel modeloSolucion = (DefaultTableModel) modelo;
+		modeloSolucion.setRowCount(0);
+		for(Pago p : empresa.devolverTodosLosPagos()) {
+			Object[] linea = {p.getId()};
+			modeloSolucion.addRow(linea);
+			}
+		return modeloSolucion;
 	}
 }

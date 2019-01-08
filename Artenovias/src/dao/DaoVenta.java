@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import modelo.Cliente;
-import modelo.Venta;
 
 public class DaoVenta {
 	/*

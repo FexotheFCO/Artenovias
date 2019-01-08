@@ -58,7 +58,7 @@ public class InterfazCliente extends JPanel {
 		panelCliente.setLayout(null);
 		
 		JPanel panelAgregarPago = new JPanel();
-		panelAgregarPago.setBounds(374, 309, 327, 184);
+		panelAgregarPago.setBounds(374, 11, 327, 184);
 		add(panelAgregarPago);
 		panelAgregarPago.setLayout(null);
 		panelAgregarPago.setVisible(false);
@@ -299,6 +299,7 @@ public class InterfazCliente extends JPanel {
 				Object valor = tablePagos.getValueAt(filaSelecionada, 0);
 				DaoTransacciones daoPagos = new DaoTransacciones();
 				daoPagos.borrarPago((int)valor);
+				cliente.borrarPago((int)valor);
 				actualizarTablaPagos(tablePagos.getModel(), cliente);
 				//TODO boton para confirmar
 			}
@@ -312,14 +313,15 @@ public class InterfazCliente extends JPanel {
 			}
 		});
 		
-		//AgregarPago ABM
+		//Agregar Pago ABM
 		btnAgregarPago_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int monto = (int) spinnerMonto.getValue();
 				if(!textFieldDescripcion.getText().isEmpty() && monto > 0) {
-					Pago pago = new Pago(0, monto, textFieldDescripcion.getText());
+					Pago pago = new Pago(0, monto, textFieldDescripcion.getText());//TODO aca que onda por que le agrego al cliente el pago con id 0, mepa que va a traer problemas, no asi cuando ya los cargue de la bd
 					DaoTransacciones daoPago = new DaoTransacciones();
-					daoPago.agregarPago(pago, cliente.getId());
+					pago.setId(daoPago.agregarPago(pago, cliente.getId()));
+					cliente.agregarPago(pago);
 					tablePagos.setModel(actualizarTablaPagos(tablePagos.getModel(), cliente));
 					panelPagos.setVisible(true);
 					panelAgregarPago.setVisible(false);
@@ -329,7 +331,7 @@ public class InterfazCliente extends JPanel {
 			}
 		});
 		
-		//CancelarPago ABM
+		//Cancelar Pago ABM
 		btnCancelarPago.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				panelPagos.setVisible(true);
@@ -388,7 +390,7 @@ public class InterfazCliente extends JPanel {
 		modeloSolucion.setRowCount(0);
 		DaoTransacciones daoPago = new DaoTransacciones();
 		int totalPagado = 0;
-		for(Pago p : daoPago.devolverTodosLosPagosDeCliente(cliente.getId())) {
+		for(Pago p : cliente.getPagos()) {
 			Object[] linea = {p.getId(),p.getDescripcion(),p.getMonto(),p.getFecha()};
 			modeloSolucion.addRow(linea);
 			totalPagado = totalPagado + p.getMonto();

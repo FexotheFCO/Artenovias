@@ -87,8 +87,9 @@ public class DaoArticulo {
 			String sql = "SELECT * FROM articulos";
 			Statement stmt = c.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
+			DaoTransacciones daoTransacciones = new DaoTransacciones();
 			while (rs.next()) {
-				articulos.add(new Articulo(rs.getInt("id"),rs.getInt("cantidad"),rs.getString("descripcion"),rs.getString("lugar")));
+				articulos.add(new Articulo(rs.getInt("id"),rs.getInt("cantidad"),rs.getString("descripcion"),rs.getString("lugar"),daoTransacciones.devolverTodosLasComprasDeArticulo(rs.getInt("id"))));
 				}
 
 		} catch (SQLException e) {
@@ -106,8 +107,9 @@ public class DaoArticulo {
 			PreparedStatement update = c.prepareStatement("SELECT * FROM articulos WHERE id = (?)");
 			update.setInt(1, id);
 			ResultSet rs = update.executeQuery();
+			DaoTransacciones daoTransacciones = new DaoTransacciones();
 			while (rs.next()) {
-				solucion = new Articulo(rs.getInt("id"),rs.getInt("cantidad"),rs.getString("descripcion"),rs.getString("lugar"));
+				solucion = new Articulo(rs.getInt("id"),rs.getInt("cantidad"),rs.getString("descripcion"),rs.getString("lugar"),daoTransacciones.devolverTodosLasComprasDeArticulo(rs.getInt("id")));
 				}
 		} catch (SQLException e) {
 			e.printStackTrace();

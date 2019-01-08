@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
@@ -99,15 +100,20 @@ public class InterfazAgregarCliente extends JPanel {
 				int telefono = (int) spinnerTelefono.getValue();
 				int telefono2 = (int) spinnerTelefono2.getValue();
 				if(!nombre.isEmpty() && !apellido.isEmpty() && !mail.isEmpty() && edad > 0 && telefono > 9999999 && telefono2 > 9999999) {
-					daoCliente.agregarCliente(new Cliente(0,nombre,apellido,mail,telefono,telefono2,edad));
+					Cliente cliente = new Cliente(0,nombre,apellido,mail,telefono,telefono2,edad);
+					daoCliente.agregarCliente(cliente);
+					ArrayList<Cliente> solucion = empresa.getClientes();
+					solucion.add(cliente);
+					empresa.setClientes(solucion);
 				}
+				//TODO boton que confirme el cambio satisfactorio
 			}
 		});
 		
 		btnAtras.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frame.setVisible(false);
-				frame.setContentPane(new InterfazEmpresa(frame,empresa));
+				frame.setContentPane(new InterfazMenu(frame,empresa));
 				frame.setVisible(true);
 			}
 		});

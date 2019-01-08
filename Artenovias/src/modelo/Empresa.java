@@ -11,16 +11,17 @@ public class Empresa {
 	private int dineroFaltante;
 	
 	private ArrayList<Cliente>clientes;
-	private ArrayList<Venta>ventas;
+	private ArrayList<Transaccion>transacciones;
 	private ArrayList<Articulo>articulos;
 	private ArrayList<Compra>compras;
 	
 	DaoArticulo daoArticulo = new DaoArticulo();
 	
 	
-	public Empresa(ArrayList<Articulo> articulos) {
+	public Empresa(ArrayList<Articulo> articulos,ArrayList<Cliente> clientes) {
 		super();
 		this.articulos = articulos;
+		this.clientes = clientes;
 	}
 
 	//Getters And Setters
@@ -28,11 +29,9 @@ public class Empresa {
 		//TODO Aca estoy pensando si vendria bien traer de los daos todos los arraylist y manejarme mas con el modelo que con los daos
 		return compras;
 	}
-
 	public void setCompras(ArrayList<Compra> compras) {
 		this.compras = compras;
 	}
-	
 	public int getId() {
 		return id;
 	}
@@ -51,11 +50,11 @@ public class Empresa {
 	public void setClientes(ArrayList<Cliente> clientes) {
 		this.clientes = clientes;
 	}
-	public ArrayList<Venta> getVentas() {
-		return ventas;
+	public ArrayList<Transaccion> getVentas() {
+		return transacciones;
 	}
-	public void setVentas(ArrayList<Venta> ventas) {
-		this.ventas = ventas;
+	public void setVentas(ArrayList<Transaccion> transacciones) {
+		this.transacciones = transacciones;
 	}
 	public ArrayList<Articulo> getArticulos() {
 		return articulos;
@@ -79,7 +78,7 @@ public class Empresa {
 	
 	public void agregarArticulo(Articulo articulo) {
 		daoArticulo.agregarArticulo(articulo);
-		actualizarArticulos();
+		//actualizarArticulos();
 	}
 	
 	public void borrarArticulo(int id) {
@@ -104,4 +103,16 @@ public class Empresa {
 		daoArticulo.actualizarArticulo(articulo);
 		actualizarArticulos();
 	}
+	
+	public ArrayList<Pago> devolverTodosLosPagos() {
+		ArrayList<Pago> solucion = new ArrayList<Pago>();
+		for(Cliente c : clientes) {
+			solucion.addAll(c.getPagos());
+		}
+		return solucion;
+	}
+	
+	/*public Pago deQuienEsEstePago(int idPago) {
+		
+	}*/
 }
