@@ -8,7 +8,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import dao.DaoCliente;
-import dao.DaoVenta;
 import modelo.Cliente;
 import modelo.Empresa;
 
