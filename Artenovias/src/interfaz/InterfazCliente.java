@@ -6,10 +6,12 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 import dao.DaoCliente;
+import dao.DaoRectificacion;
 import dao.DaoTransacciones;
 import modelo.Cliente;
 import modelo.Empresa;
 import modelo.Pago;
+import modelo.Rectificacion;
 import modelo.Vestido;
 
 import java.awt.event.ActionListener;
@@ -22,12 +24,12 @@ import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-@SuppressWarnings("serial")
 public class InterfazCliente extends JPanel {
 	private JTextField textFieldNombre;
 	private JTextField textFieldApellido;
 	private JTextField textFieldMail;
     private	DaoCliente daoCliente = new DaoCliente();
+    private DaoRectificacion daoRectificacion = new DaoRectificacion();
     private JTable tableRect;
     private JTable tablePagos;
     private JTextField textFieldDescripcion;
@@ -76,6 +78,7 @@ public class InterfazCliente extends JPanel {
 		JScrollPane scrollPaneTextoRect = new JScrollPane();
 		scrollPaneTextoRect.setBounds(120, 508, 244, 148);
 		add(scrollPaneTextoRect);
+		scrollPaneTextoRect.setVisible(false);
 		
 		//Labels
 		//Usuario
@@ -383,12 +386,29 @@ public class InterfazCliente extends JPanel {
 			}
 		});
 		
+		//Rectificaciones
+		//Ocultar la tabla y mostrar el TextField
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
+		//Agregar nueva rectificacion con lo que hay en el textbox
+		btnAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Rectificacion rectificacion = new Rectificacion(0, textArea.getText());
+				cliente.agregarRectificacion(rectificacion);
+				daoRectificacion.agregarRectificacion(rectificacion, cliente.getId());
+				tableRect.setModel(actualizarTablaRectificaciones(tableRect.getModel(), cliente));
+			}
+		});
+		
+		
 	}
 	
-	DefaultTableModel actualizarTablaPagos(TableModel modelo, Cliente cliente) {
+	private DefaultTableModel actualizarTablaPagos(TableModel modelo, Cliente cliente) {
 		DefaultTableModel modeloSolucion = (DefaultTableModel) modelo;
 		modeloSolucion.setRowCount(0);
-		DaoTransacciones daoPago = new DaoTransacciones();
 		int totalPagado = 0;
 		for(Pago p : cliente.getPagos()) {
 			Object[] linea = {p.getId(),p.getDescripcion(),p.getMonto(),p.getFecha()};
@@ -399,6 +419,16 @@ public class InterfazCliente extends JPanel {
 		labelNumeroTotal.setText(String.valueOf(cliente.getValorVestido()));
 		lblNumeroPagado.setText(String.valueOf(totalPagado));
 		labelNumeroFaltante.setText(String.valueOf(valorVestido - totalPagado));
+		return modeloSolucion;
+	}
+	
+	private DefaultTableModel actualizarTablaRectificaciones(TableModel modelo, Cliente cliente) {
+		DefaultTableModel modeloSolucion = (DefaultTableModel) modelo;
+		modeloSolucion.setRowCount(0);
+		for(Rectificacion rec : cliente.getRectificaciones()) {
+			Object[] linea = {rec.getId(),rec.getFecha()};
+			modeloSolucion.addRow(linea);
+			}
 		return modeloSolucion;
 	}
 }

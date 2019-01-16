@@ -42,6 +42,7 @@ public class Articulo {
 		compras.remove(solucion);
 	}
     
+	//Getters and Setters
 	public ArrayList<Compra> getCompras() {
 		return compras;
 	}

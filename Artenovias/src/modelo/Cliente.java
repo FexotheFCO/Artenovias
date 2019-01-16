@@ -15,6 +15,7 @@ public class Cliente {
 	private int edad;
 	private Vestido vestido;
 	private ArrayList<Pago>pagos;
+	private ArrayList<Rectificacion>rectificaciones;
 	
 	public Cliente(int id, String nombre, String apellido, String mail, int telefono, int telefono2, int edad) {
 		super();
@@ -34,6 +35,7 @@ public class Cliente {
 	}
 	
 	public Cliente(int id, String nombre, String apellido, String mail, int telefono, int telefono2, int edad, Vestido vestido,ArrayList<Pago>pagos) {
+		//TODO arraylist rectificaciones
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -46,6 +48,7 @@ public class Cliente {
 		this.pagos = pagos;
 	}
 	
+	//Funciones
 	public void agregarPago(Pago pago) {
 		pagos.add(pago);
 	}
@@ -64,6 +67,27 @@ public class Cliente {
 		return vestido.getValor();
 	}
 	
+	public void agregarRectificacion(Rectificacion rectificacion) {
+		rectificaciones.add(rectificacion);
+	}
+	
+	public void borrarRectificacion(int idRectificacion) {
+		Rectificacion solucion = null;
+		for(Rectificacion rectificacion : rectificaciones){
+			if(rectificacion.getId() == idRectificacion) {
+				solucion = rectificacion;
+			}
+		}
+		rectificaciones.remove(solucion);
+	}
+	
+	//getter and setters
+	public ArrayList<Rectificacion> getRectificaciones() {
+		return rectificaciones;
+	}
+	public void setRectificaciones(ArrayList<Rectificacion> rectificaciones) {
+		this.rectificaciones = rectificaciones;
+	}
 	public ArrayList<Pago> getPagos() {
 		return pagos;
 	}
