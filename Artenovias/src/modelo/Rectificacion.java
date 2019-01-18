@@ -9,10 +9,11 @@ public class Rectificacion {
 	String texto;
 	Date fecha;
 	
-	public Rectificacion(int id, String texto) {
+	public Rectificacion(int id, String texto, Date fecha) {
 		super();
 		this.id = id;
 		this.texto = texto;
+		this.fecha = fecha;
 	}
 	
 	public int getId() {

@@ -2,6 +2,7 @@ package modelo;
 import java.util.ArrayList;
 
 import dao.DaoArticulo;
+import dao.DaoCliente;
 
 public class Empresa {
 	
@@ -16,6 +17,7 @@ public class Empresa {
 	private ArrayList<Compra>compras;
 	
 	DaoArticulo daoArticulo = new DaoArticulo();
+	DaoCliente daoCliente = new DaoCliente();
 	
 	
 	public Empresa(ArrayList<Articulo> articulos,ArrayList<Cliente> clientes) {
@@ -74,6 +76,10 @@ public class Empresa {
 	
 	void realizarCompra() {
 		
+	}
+	
+	public ArrayList<Cliente> busquedaDeClientes(String busqueda) {
+		return daoCliente.busquedaDeClientes(busqueda);
 	}
 	
 	public void agregarArticulo(Articulo articulo) {

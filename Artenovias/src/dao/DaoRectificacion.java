@@ -55,7 +55,7 @@ public class DaoRectificacion {
 		return id;
 	}
 	
-	public void borrarPago(int idRectificacion) {
+	public void borrarRectificacion(int idRectificacion) {
 		conectar();
 		try {
 			PreparedStatement stm = c.prepareStatement("DELETE FROM `artenovias`.`rectificaciones` WHERE id = (?);");
@@ -76,7 +76,7 @@ public class DaoRectificacion {
 			stm.setInt(1, idCliente);
 			ResultSet rs = stm.executeQuery();
 			while (rs.next()) {
-				rectificacion.add(new Rectificacion(rs.getInt("id"),rs.getString("texto")));
+				rectificacion.add(new Rectificacion(rs.getInt("id"),rs.getString("texto"),rs.getDate("fecha")));
 				}
 
 		} catch (SQLException e) {

@@ -23,6 +23,9 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.text.DefaultCaret;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.DropMode;
 
 public class InterfazCliente extends JPanel {
 	private JTextField textFieldNombre;
@@ -65,20 +68,32 @@ public class InterfazCliente extends JPanel {
 		panelAgregarPago.setLayout(null);
 		panelAgregarPago.setVisible(false);
 		
+		JPanel panelRectAgregar = new JPanel();
+		panelRectAgregar.setBounds(120, 504, 244, 184);
+		add(panelRectAgregar);
+		panelRectAgregar.setLayout(null);
+		panelRectAgregar.setVisible(false);
+		
 		
 		//ScrolPanel
 		JScrollPane scrollPaneListaPagos = new JScrollPane();
 		scrollPaneListaPagos.setBounds(10, 11, 307, 136);
 		panelPagos.add(scrollPaneListaPagos);
 		
+		JScrollPane scrollPaneTextoRect = new JScrollPane();
+		scrollPaneTextoRect.setBounds(0, 0, 244, 148);
+		panelRectAgregar.add(scrollPaneTextoRect);
+		scrollPaneTextoRect.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPaneTextoRect.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		
 		JScrollPane scrollPaneListaRect = new JScrollPane();
 		scrollPaneListaRect.setBounds(120, 345, 244, 148);
 		add(scrollPaneListaRect);
 		
-		JScrollPane scrollPaneTextoRect = new JScrollPane();
-		scrollPaneTextoRect.setBounds(120, 508, 244, 148);
-		add(scrollPaneTextoRect);
-		scrollPaneTextoRect.setVisible(false);
+		//Areas y Tablas
+		JTextArea textArea = new JTextArea("",5,20);
+		scrollPaneTextoRect.setViewportView(textArea);
+		textArea.setToolTipText("");
 		
 		//Labels
 		//Usuario
@@ -180,6 +195,14 @@ public class InterfazCliente extends JPanel {
 		btnEdit.setBounds(33, 173, 73, 23);
 		panelCliente.add(btnEdit);
 		
+		JButton btnAceptar = new JButton("Aceptar");
+		btnAceptar.setBounds(155, 161, 89, 23);
+		panelRectAgregar.add(btnAceptar);
+		
+		JButton btnCancelarRect = new JButton("Cancelar");
+		btnCancelarRect.setBounds(0, 161, 89, 23);
+		panelRectAgregar.add(btnCancelarRect);
+		
 		JButton btnAgregarPago_1 = new JButton("Agregar");
 		btnAgregarPago_1.setBounds(114, 98, 89, 23);
 		panelAgregarPago.add(btnAgregarPago_1);
@@ -212,10 +235,6 @@ public class InterfazCliente extends JPanel {
 		btnMostrar.setBounds(10, 345, 89, 23);
 		add(btnMostrar);
 		
-		JButton btnAceptar = new JButton("Aceptar");
-		btnAceptar.setBounds(197, 667, 89, 23);
-		add(btnAceptar);
-		
 		JButton btnAgregarPago = new JButton("Agregar");
 		btnAgregarPago.setBounds(228, 253, 89, 23);
 		panelPagos.add(btnAgregarPago);
@@ -223,6 +242,10 @@ public class InterfazCliente extends JPanel {
 		JButton btnBorrarPago = new JButton("Borrar");
 		btnBorrarPago.setBounds(129, 253, 89, 23);
 		panelPagos.add(btnBorrarPago);
+		
+		JButton btnBorrarRect = new JButton("Borrar");
+		btnBorrarRect.setBounds(10, 413, 89, 23);
+		add(btnBorrarRect);
 		
 		//TextField
 		textFieldNombre = new JTextField();
@@ -268,12 +291,16 @@ public class InterfazCliente extends JPanel {
 		spinnerMonto.setBounds(176, 57, 86, 20);
 		panelAgregarPago.add(spinnerMonto);
 		
-		//Areas y Tablas
-		JTextArea textArea = new JTextArea();
-		scrollPaneTextoRect.setViewportView(textArea);
-		
 		tableRect = new JTable();
+		tableRect.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"id", "Fecha"
+			}
+		));
 		scrollPaneListaRect.setViewportView(tableRect);
+		tableRect.setModel(actualizarTablaRectificaciones(tableRect.getModel(), cliente));
 		
 		tablePagos = new JTable();
 		tablePagos.setModel(new DefaultTableModel(
@@ -293,7 +320,6 @@ public class InterfazCliente extends JPanel {
 		tablePagos.getColumnModel().getColumn(3).setPreferredWidth(50);
 		scrollPaneListaPagos.setViewportView(tablePagos);
 		tablePagos.setModel(actualizarTablaPagos(tablePagos.getModel(), cliente));
-		
 		
 		//Borrar Pago
 		btnBorrarPago.addActionListener(new ActionListener() {
@@ -390,19 +416,62 @@ public class InterfazCliente extends JPanel {
 		//Ocultar la tabla y mostrar el TextField
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				scrollPaneListaRect.setVisible(false);
+				panelRectAgregar.setVisible(true);
+				btnAceptar.setVisible(true);
 			}
 		});
+		
 		//Agregar nueva rectificacion con lo que hay en el textbox
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Rectificacion rectificacion = new Rectificacion(0, textArea.getText());
+				Rectificacion rectificacion = new Rectificacion(0, textArea.getText(),null);
+				rectificacion.setId(daoRectificacion.agregarRectificacion(rectificacion, cliente.getId()));
 				cliente.agregarRectificacion(rectificacion);
-				daoRectificacion.agregarRectificacion(rectificacion, cliente.getId());
+				tableRect.setModel(actualizarTablaRectificaciones(tableRect.getModel(), cliente));
+				textArea.setText("");
+				panelRectAgregar.setVisible(false);
+				scrollPaneListaRect.setVisible(true);
+			}
+		});
+		
+		//Mostrar la tabla y ocultar el textfield
+		btnCancelarRect.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				panelRectAgregar.setVisible(false);
+				textArea.setText("");
+				scrollPaneListaRect.setVisible(true);
+				btnAceptar.setVisible(true);
+			}
+		});
+		
+		//Borrar rectificacion
+		btnBorrarRect.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int filaSelecionada = tableRect.getSelectedRow();
+				Object valor = tableRect.getValueAt(filaSelecionada, 0);
+				cliente.borrarRectificacion((int) valor);
+				daoRectificacion.borrarRectificacion((int) valor);
 				tableRect.setModel(actualizarTablaRectificaciones(tableRect.getModel(), cliente));
 			}
 		});
 		
+		//Mostrar rectificacion
+		btnMostrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int filaSelecionada = tableRect.getSelectedRow();
+				Object valor = tableRect.getValueAt(filaSelecionada, 0);
+				scrollPaneListaRect.setVisible(false);
+				panelRectAgregar.setVisible(true);
+				btnAceptar.setVisible(false);
+				for(Rectificacion rect : cliente.getRectificaciones()) {
+					if(rect.getId() == (int) valor) {
+						textArea.setText(rect.getTexto());
+					}
+				}
+				
+			}
+		});
 		
 	}
 	

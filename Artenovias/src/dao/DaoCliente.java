@@ -12,6 +12,10 @@ import modelo.Cliente;
 
 public class DaoCliente {
 	
+	private DaoVestido daoVestido = new DaoVestido();
+	private DaoTransacciones daoTrans = new DaoTransacciones();
+	private DaoRectificacion daoRect = new DaoRectificacion();
+	
 	Connection c = null;
 
 	void conectar() {
@@ -81,10 +85,9 @@ public class DaoCliente {
 			String sql = "SELECT * FROM clientes";
 			Statement stmt = c.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-			DaoVestido daoVestido = new DaoVestido();
-			DaoTransacciones daoTrans = new DaoTransacciones();
 			while (rs.next()) {
-				clientes.add(new Cliente(rs.getInt("id"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("mail"),rs.getInt("telefono1"),rs.getInt("telefono2"),rs.getInt("edad"),daoVestido.devolverUnVestido(rs.getInt("idvestido")),daoTrans.devolverTodosLosPagosDeCliente(rs.getInt("id"))));
+				clientes.add(new Cliente(rs.getInt("id"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("mail"),rs.getInt("telefono1"),rs.getInt("telefono2"),rs.getInt("edad"),
+						daoVestido.devolverUnVestido(rs.getInt("idvestido")),daoTrans.devolverTodosLosPagosDeCliente(rs.getInt("id")),daoRect.devolverTodasLasRectificacionesDeCliente(rs.getInt("id"))));
 				}
 
 		} catch (SQLException e) {
@@ -105,7 +108,8 @@ public class DaoCliente {
 			DaoVestido daoVestido = new DaoVestido();
 			DaoTransacciones daoTrans = new DaoTransacciones();
 			while (rs.next()) {
-				return new Cliente(rs.getInt("id"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("mail"),rs.getInt("telefono1"),rs.getInt("telefono2"),rs.getInt("edad"),daoVestido.devolverUnVestido(rs.getInt("idvestido")),daoTrans.devolverTodosLosPagosDeCliente(rs.getInt("id")));
+				return new Cliente(rs.getInt("id"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("mail"),rs.getInt("telefono1"),rs.getInt("telefono2"),rs.getInt("edad"),
+						daoVestido.devolverUnVestido(rs.getInt("idvestido")),daoTrans.devolverTodosLosPagosDeCliente(rs.getInt("id")),daoRect.devolverTodasLasRectificacionesDeCliente(rs.getInt("id")));
 			}
 			
 		} catch(SQLException e) {
@@ -113,5 +117,25 @@ public class DaoCliente {
 		}
 		desconectar();
 		return null;
+	}
+	
+	public ArrayList<Cliente> busquedaDeClientes(String busqueda){
+		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+		conectar();
+		try {
+			String sql = "SELECT * FROM clientes where `apellido` LIKE (?)";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setString(1, busqueda + "%");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				clientes.add(new Cliente(rs.getInt("id"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("mail"),rs.getInt("telefono1"),rs.getInt("telefono2"),rs.getInt("edad"),
+						daoVestido.devolverUnVestido(rs.getInt("idvestido")),daoTrans.devolverTodosLosPagosDeCliente(rs.getInt("id")),daoRect.devolverTodasLasRectificacionesDeCliente(rs.getInt("id"))));
+				}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		desconectar();
+		return clientes;
 	}
 }

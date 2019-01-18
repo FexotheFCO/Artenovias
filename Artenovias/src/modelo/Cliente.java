@@ -34,7 +34,7 @@ public class Cliente {
 		this.vestido = daoVestido.devolverUnVestido(idVestido);
 	}
 	
-	public Cliente(int id, String nombre, String apellido, String mail, int telefono, int telefono2, int edad, Vestido vestido,ArrayList<Pago>pagos) {
+	public Cliente(int id, String nombre, String apellido, String mail, int telefono, int telefono2, int edad, Vestido vestido,ArrayList<Pago>pagos,ArrayList<Rectificacion>rectificaciones) {
 		//TODO arraylist rectificaciones
 		super();
 		this.id = id;
@@ -46,6 +46,7 @@ public class Cliente {
 		this.edad = edad;
 		this.vestido = vestido;
 		this.pagos = pagos;
+		this.rectificaciones = rectificaciones;
 	}
 	
 	//Funciones
@@ -68,6 +69,7 @@ public class Cliente {
 	}
 	
 	public void agregarRectificacion(Rectificacion rectificacion) {
+		System.out.println(rectificacion.getTexto());
 		rectificaciones.add(rectificacion);
 	}
 	
