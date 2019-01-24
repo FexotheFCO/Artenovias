@@ -1,6 +1,9 @@
 package modelo;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
+import dao.DaoRectificacion;
 import dao.DaoTransacciones;
 import dao.DaoVestido;
 
@@ -16,6 +19,10 @@ public class Cliente {
 	private Vestido vestido;
 	private ArrayList<Pago>pagos;
 	private ArrayList<Rectificacion>rectificaciones;
+	
+	DaoTransacciones daoTrans = new DaoTransacciones();
+	DaoRectificacion daoRect = new DaoRectificacion();
+	DaoVestido daoVestido = new DaoVestido();
 	
 	public Cliente(int id, String nombre, String apellido, String mail, int telefono, int telefono2, int edad) {
 		super();
@@ -51,17 +58,26 @@ public class Cliente {
 	
 	//Funciones
 	public void agregarPago(Pago pago) {
+		pago.setId(daoTrans.agregarPago(pago, id));
 		pagos.add(pago);
+		JOptionPane.showMessageDialog(null, "El pago se agrego correctamente al sistema", "Pago Agregado", 1);
 	}
 	
 	public void borrarPago(int idPago) {
-		Pago solucion = null;
-		for(Pago p : pagos) {
-			if(p.getId() == idPago) {
-				solucion = p;
+		int pregunta = JOptionPane.showConfirmDialog(null, "Esta seguro de que quiere eliminar este pago", "Eliminar Pago", 2, 2);
+		if (pregunta == JOptionPane.YES_OPTION) {
+			Pago solucion = null;
+			for(Pago p : pagos) {
+				if(p.getId() == idPago) {
+					solucion = p;
+				}
 			}
+			pagos.remove(solucion);
+			daoTrans.borrarPago(idPago);
+			JOptionPane.showMessageDialog(null, "El pago se a eliminado correctamente del sistema", "Pago Borrado", 1);
+		}else {
+			JOptionPane.showMessageDialog(null, "Se cancelo la eliminacion del pago", "Eliminacion Cancelada", 1);
 		}
-		pagos.remove(solucion);
 	}
 
 	public int getValorVestido() {
@@ -69,18 +85,41 @@ public class Cliente {
 	}
 	
 	public void agregarRectificacion(Rectificacion rectificacion) {
-		System.out.println(rectificacion.getTexto());
+		rectificacion.setId(daoRect.agregarRectificacion(rectificacion, id));
 		rectificaciones.add(rectificacion);
+		JOptionPane.showMessageDialog(null, "La rectificacion se agrego correctamente al sistema", "Rectificacion Agregada", 1);
 	}
 	
 	public void borrarRectificacion(int idRectificacion) {
-		Rectificacion solucion = null;
-		for(Rectificacion rectificacion : rectificaciones){
-			if(rectificacion.getId() == idRectificacion) {
-				solucion = rectificacion;
+		int pregunta = JOptionPane.showConfirmDialog(null, "Esta seguro de que quiere eliminar este pago", "Eliminar Pago", 2, 2);
+		if (pregunta == JOptionPane.YES_OPTION) {
+			Rectificacion solucion = null;
+			for(Rectificacion rectificacion : rectificaciones){
+				if(rectificacion.getId() == idRectificacion) {
+					solucion = rectificacion;
+				}
 			}
+			rectificaciones.remove(solucion);
+			daoRect.borrarRectificacion(idRectificacion);
+			JOptionPane.showMessageDialog(null, "La rectificacion se elimino correctamente del sistema", "Rectificacion Eliminada", 1);
+		}else {
+			JOptionPane.showMessageDialog(null, "Se cancelo la eliminacion del pago", "Eliminacion Cancelada", 1);
 		}
-		rectificaciones.remove(solucion);
+		
+	}
+	
+	public void editarVestido(Vestido vestido) {
+		daoVestido.actualizarVestido(vestido);
+		this.vestido = vestido;
+		JOptionPane.showMessageDialog(null, "El vestido se edito correctamente", "Vestido editado", 1);
+	}
+	
+	public int devolverValorPagos() {
+		int montoTotal = 0;
+		for(Pago p : pagos) {
+			montoTotal = montoTotal + p.getMonto();
+		}
+		return montoTotal;
 	}
 	
 	//getter and setters

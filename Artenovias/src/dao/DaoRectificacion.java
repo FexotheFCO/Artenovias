@@ -42,7 +42,7 @@ public class DaoRectificacion {
 			PreparedStatement update = c.prepareStatement("INSERT INTO `artenovias`.`rectificaciones` (`idcliente`,`texto`,`fecha`) VALUES (?,?,?);",Statement.RETURN_GENERATED_KEYS);
 			update.setInt(1, idCliente);
 			update.setString(2, rectificacion.getTexto());
-			update.setDate(3, rectificacion.getFecha());
+			update.setDate(3, java.sql.Date.valueOf(rectificacion.getFecha()));
 			update.executeUpdate();
 			ResultSet rs = update.getGeneratedKeys();
 			while(rs.next()) {

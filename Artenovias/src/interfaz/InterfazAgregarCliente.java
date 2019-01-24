@@ -101,10 +101,7 @@ public class InterfazAgregarCliente extends JPanel {
 				int telefono2 = (int) spinnerTelefono2.getValue();
 				if(!nombre.isEmpty() && !apellido.isEmpty() && !mail.isEmpty() && edad > 0 && telefono > 9999999 && telefono2 > 9999999) {
 					Cliente cliente = new Cliente(0,nombre,apellido,mail,telefono,telefono2,edad);
-					daoCliente.agregarCliente(cliente);
-					ArrayList<Cliente> solucion = empresa.getClientes();
-					solucion.add(cliente);
-					empresa.setClientes(solucion);
+					empresa.agregarCliente(cliente);
 				}
 				//TODO boton que confirme el cambio satisfactorio
 			}

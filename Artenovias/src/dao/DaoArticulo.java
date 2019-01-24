@@ -36,19 +36,24 @@ public class DaoArticulo {
 		}
 	}
 	
-	public void agregarArticulo(Articulo articulo) {
+	public int agregarArticulo(Articulo articulo) {
 		conectar();
+		int id = 0;
 		try {
-			PreparedStatement update = c.prepareStatement("INSERT INTO `artenovias`.`articulos` (`cantidad`,`descripcion`,`lugar`) VALUES (?,?,?);");
+			PreparedStatement update = c.prepareStatement("INSERT INTO `artenovias`.`articulos` (`cantidad`,`descripcion`,`lugar`) VALUES (?,?,?);",Statement.RETURN_GENERATED_KEYS);
 			update.setInt(1, articulo.getCantidad());
 			update.setString(2, articulo.getDescripcion());
 			update.setString(3, articulo.getLugar());
 			update.executeUpdate();
-			update.close();
+			ResultSet rs = update.getGeneratedKeys();
+			while(rs.next()) {
+				id = rs.getInt(1);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		desconectar();
+		return id;
 	}
 	
 	public void actualizarArticulo(Articulo articulo) {
@@ -74,6 +79,9 @@ public class DaoArticulo {
 			stm.setInt(1, id);
 			stm.executeUpdate();
 			stm.close();
+		}catch (java.sql.SQLIntegrityConstraintViolationException e1) {
+			e1.printStackTrace();
+			//todo msj de que el articulo tiene compras incluidas y no se puede borrar
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}

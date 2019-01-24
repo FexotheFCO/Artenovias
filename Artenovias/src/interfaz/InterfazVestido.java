@@ -498,11 +498,9 @@ public class InterfazVestido extends JPanel {
 				int ancho = Integer.valueOf(textFieldAncho.getText());
 				int puño = Integer.valueOf(textFieldPuño.getText());
 				int largoCascada = Integer.valueOf(textFieldLargoCascada.getText());
-				DaoVestido daoVestido = new DaoVestido();
-				daoVestido.actualizarVestido(new Vestido(vestido.getId(),valor,talleDelantero,talleTrasero,hombro,alturaHombro,espalda,pecho,pinza,bajoSisa,busto,bustoDelantero,
+				cliente.editarVestido(new Vestido(vestido.getId(),valor,talleDelantero,talleTrasero,hombro,alturaHombro,espalda,pecho,pinza,bajoSisa,busto,bustoDelantero,
 						contornoBustoSup,contornoBustoInf,centroBusto,cintura,cadera,escoteDelantero,escoteTrasero,pico,largoFaldaLarga,largoFaldaCorta,arrastre,
-						largo,ancho,puño,largoCascada)); 
-				cliente.setVestido(daoVestido.devolverUnVestido(vestido.getId()));
+						largo,ancho,puño,largoCascada));
 				actualizarResultados(cliente.getVestido());
 				panelResultado.setVisible(true);
 				panelEdicion.setVisible(false);

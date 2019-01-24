@@ -6,8 +6,6 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 import dao.DaoCliente;
-import dao.DaoRectificacion;
-import dao.DaoTransacciones;
 import modelo.Cliente;
 import modelo.Empresa;
 import modelo.Pago;
@@ -32,7 +30,6 @@ public class InterfazCliente extends JPanel {
 	private JTextField textFieldApellido;
 	private JTextField textFieldMail;
     private	DaoCliente daoCliente = new DaoCliente();
-    private DaoRectificacion daoRectificacion = new DaoRectificacion();
     private JTable tableRect;
     private JTable tablePagos;
     private JTextField textFieldDescripcion;
@@ -326,8 +323,6 @@ public class InterfazCliente extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				int filaSelecionada = tablePagos.getSelectedRow();
 				Object valor = tablePagos.getValueAt(filaSelecionada, 0);
-				DaoTransacciones daoPagos = new DaoTransacciones();
-				daoPagos.borrarPago((int)valor);
 				cliente.borrarPago((int)valor);
 				actualizarTablaPagos(tablePagos.getModel(), cliente);
 				//TODO boton para confirmar
@@ -347,9 +342,7 @@ public class InterfazCliente extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				int monto = (int) spinnerMonto.getValue();
 				if(!textFieldDescripcion.getText().isEmpty() && monto > 0) {
-					Pago pago = new Pago(0, monto, textFieldDescripcion.getText());//TODO aca que onda por que le agrego al cliente el pago con id 0, mepa que va a traer problemas, no asi cuando ya los cargue de la bd
-					DaoTransacciones daoPago = new DaoTransacciones();
-					pago.setId(daoPago.agregarPago(pago, cliente.getId()));
+					Pago pago = new Pago(0, monto, textFieldDescripcion.getText());
 					cliente.agregarPago(pago);
 					tablePagos.setModel(actualizarTablaPagos(tablePagos.getModel(), cliente));
 					panelPagos.setVisible(true);
@@ -393,12 +386,12 @@ public class InterfazCliente extends JPanel {
 			}
 		});
 		
-		//Boton confirmar
+		//Boton confirmar edicion
 		btnConfirmar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Cliente n = new Cliente(cliente.getId(),textFieldNombre.getText(),textFieldApellido.getText(),textFieldMail.getText(),(int) spinnerTelefono.getValue(),(int) spinnerTelefono2.getValue(),(int)spinnerEdad.getValue());
 				//TODO aca deberiamos remplazar el cliente que usa esta interfaz por el actualizado, tambien actualizar los text fields y labels
-				daoCliente.editarCliente(n);
+				empresa.editarCliente(cliente);
 				panelEditar.setVisible(false);
 				panelCliente.setVisible(true);
 			}
@@ -425,8 +418,7 @@ public class InterfazCliente extends JPanel {
 		//Agregar nueva rectificacion con lo que hay en el textbox
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Rectificacion rectificacion = new Rectificacion(0, textArea.getText(),null);
-				rectificacion.setId(daoRectificacion.agregarRectificacion(rectificacion, cliente.getId()));
+				Rectificacion rectificacion = new Rectificacion(0, textArea.getText());
 				cliente.agregarRectificacion(rectificacion);
 				tableRect.setModel(actualizarTablaRectificaciones(tableRect.getModel(), cliente));
 				textArea.setText("");
@@ -451,7 +443,6 @@ public class InterfazCliente extends JPanel {
 				int filaSelecionada = tableRect.getSelectedRow();
 				Object valor = tableRect.getValueAt(filaSelecionada, 0);
 				cliente.borrarRectificacion((int) valor);
-				daoRectificacion.borrarRectificacion((int) valor);
 				tableRect.setModel(actualizarTablaRectificaciones(tableRect.getModel(), cliente));
 			}
 		});

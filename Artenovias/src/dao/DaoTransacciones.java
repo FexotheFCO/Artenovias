@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,7 +43,7 @@ public class DaoTransacciones {
 			PreparedStatement update = c.prepareStatement("INSERT INTO `artenovias`.`pagos` (`idcliente`,`monto`,`fecha`,`descripcion`) VALUES (?,?,?,?);",Statement.RETURN_GENERATED_KEYS);
 			update.setInt(1, idCliente);
 			update.setInt(2, pago.getMonto());
-			update.setDate(3, null);
+			update.setDate(3, java.sql.Date.valueOf(pago.getFecha()));
 			update.setString(4, pago.getDescripcion());
 			update.executeUpdate();
 			ResultSet rs = update.getGeneratedKeys();
@@ -97,7 +98,7 @@ public class DaoTransacciones {
 			stm.setInt(1, idCliente);
 			ResultSet rs = stm.executeQuery();
 			while (rs.next()) {
-				pagos.add(new Pago(rs.getInt("id"),rs.getInt("monto"),rs.getString("descripcion")));
+				pagos.add(new Pago(rs.getInt("id"),rs.getInt("monto"),rs.getString("descripcion"),rs.getDate("fecha")));
 				}
 
 		} catch (SQLException e) {
@@ -115,7 +116,7 @@ public class DaoTransacciones {
 			PreparedStatement update = c.prepareStatement("INSERT INTO `artenovias`.`compras` (`idarticulo`,`monto`,`fecha`,`cantidad`) VALUES (?,?,?,?);",Statement.RETURN_GENERATED_KEYS);
 			update.setInt(1, idArticulo);
 			update.setInt(2, compra.getMonto());
-			update.setDate(3, null);
+			update.setDate(3, java.sql.Date.valueOf(compra.getFecha()));
 			update.setInt(4, compra.getCantidad());
 			update.executeUpdate();
 			ResultSet rs = update.getGeneratedKeys();

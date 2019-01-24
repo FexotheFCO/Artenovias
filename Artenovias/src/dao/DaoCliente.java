@@ -39,10 +39,11 @@ public class DaoCliente {
 		}
 	}
 	
-	public void agregarCliente(Cliente cliente){
+	public int agregarCliente(Cliente cliente){
 		conectar();
+		int id = 0;
 		try {
-			PreparedStatement update = c.prepareStatement("INSERT INTO `artenovias`.`clientes` (`nombre`,`apellido`,`mail`,`edad`,`telefono1`,`telefono2`,`idvestido`) VALUES (?,?,?,?,?,?,?);");
+			PreparedStatement update = c.prepareStatement("INSERT INTO `artenovias`.`clientes` (`nombre`,`apellido`,`mail`,`edad`,`telefono1`,`telefono2`,`idvestido`) VALUES (?,?,?,?,?,?,?);",Statement.RETURN_GENERATED_KEYS);
 			update.setString(1, cliente.getNombre());
 			update.setString(2, cliente.getApellido());
 			update.setString(3, cliente.getMail());
@@ -51,11 +52,15 @@ public class DaoCliente {
 			update.setInt(6, cliente.getTelefono2());
 			update.setInt(7, cliente.getIdVestido());
 			update.executeUpdate();
-			update.close();
+			ResultSet rs = update.getGeneratedKeys();
+			while(rs.next()) {
+				id = rs.getInt(1);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		desconectar();
+		return id;
 	}
 	
 	public void editarCliente(Cliente cliente) {

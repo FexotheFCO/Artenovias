@@ -1,18 +1,21 @@
 package modelo;
-import java.util.Date;
+
+import java.sql.Date;
+import java.time.LocalDate;
 
 public class Compra {
 	
 	private int id;
 	private int monto;
 	private int cantidad;
-	private Date fecha;
+	private LocalDate fecha;
 	
 	public Compra(int id, int monto, int cantidad) {
 		super();
 		this.id = id;
 		this.monto = monto;
 		this.cantidad = cantidad;
+		fecha = LocalDate.now();
 	}
 	
 	public Compra(int id, int monto,Date fecha, int cantidad ) {
@@ -20,7 +23,7 @@ public class Compra {
 		this.id = id;
 		this.monto = monto;
 		this.cantidad = cantidad;
-		this.fecha = fecha;
+		this.fecha = fecha.toLocalDate();
 	}
 
 
@@ -44,10 +47,10 @@ public class Compra {
 	public void setMonto(int monto) {
 		this.monto = monto;
 	}
-	public Date getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
-	public void setFecha(Date fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 

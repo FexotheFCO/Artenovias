@@ -4,17 +4,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import modelo.Articulo;
-import modelo.Cliente;
 import modelo.Compra;
 import modelo.Empresa;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import dao.DaoArticulo;
-import dao.DaoTransacciones;
 
 import javax.swing.JButton;
 import java.awt.Font;
@@ -28,8 +25,6 @@ import javax.swing.ListSelectionModel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 public class InterfazArticulos extends JPanel {
 	private JTable tableArticulos;
@@ -227,7 +222,7 @@ public class InterfazArticulos extends JPanel {
 			}
 		));
 		scrollPane_1.setViewportView(tableCompras);
-		tableCompras.setModel(actualizarListaCompras(tableCompras.getModel()));
+		//tableCompras.setModel(actualizarListaCompras(tableCompras.getModel()));
 		
 		//Atras Interfaz
 		btnAtrasInterfaz.addActionListener(new ActionListener() {
@@ -279,6 +274,7 @@ public class InterfazArticulos extends JPanel {
 				panelEdicion.setVisible(true);
 	        	try {
 	        		ultimaSeleccion = (int) tableArticulos.getValueAt(tableArticulos.getSelectedRow(), 0);
+	        		tableCompras.setModel(actualizarListaCompras(tableCompras.getModel(),ultimaSeleccion));
 	        	}catch(ArrayIndexOutOfBoundsException s) {
 	        		//s.printStackTrace();
 	        		//TODO aca hay un problema raro
@@ -297,7 +293,6 @@ public class InterfazArticulos extends JPanel {
 	        		ultimaSeleccionCompra = (int) tableCompras.getValueAt(tableCompras.getSelectedRow(), 0);
 	        	}catch(ArrayIndexOutOfBoundsException s) {
 	        		//s.printStackTrace();
-	        		//TODO aca hay un problema raro
 	        		//cuando se usan los botones de sumar y restar por alguna razon entra a este codigo
 	        		//y tira un error por eso el try
 	        	}
@@ -349,7 +344,7 @@ public class InterfazArticulos extends JPanel {
 				panelEdicion.setVisible(false);
 				panelAgregarArticulo.setVisible(false);
 				tableArticulos.setModel(actualizarListaArticulos(tableArticulos.getModel()));
-				tableCompras.setModel(actualizarListaCompras(tableCompras.getModel()));
+				tableCompras.setModel(actualizarListaCompras(tableCompras.getModel(),ultimaSeleccion));
 				textFieldDescripcion.setText("");
 				textFieldLugar.setText("");
 				spinnerCantidad.setValue(1);
@@ -386,23 +381,18 @@ public class InterfazArticulos extends JPanel {
 		btnAgregarCompraABM.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if((int) spinnerCantidadCompra.getValue() > 0 && (int) spinnerMonto.getValue() > 0) {
-					DaoTransacciones daoTransacciones = new DaoTransacciones();
 					Compra compra = new Compra(0,(int) spinnerMonto.getValue(),(int) spinnerCantidadCompra.getValue());
-					Articulo articuloSolucion = null;
 					for(Articulo articulo : empresa.getArticulos()) {
 						if(articulo.getId() == ultimaSeleccion) {
-							compra.setId(daoTransacciones.agregarCompra(compra, ultimaSeleccion));
 							articulo.agregarCompra(compra);
 							articulo.setCantidad(articulo.getCantidad() + (int) spinnerCantidadCompra.getValue());
-							articuloSolucion = articulo;
 						}
 					}
-					empresa.editarArticulo(articuloSolucion);
 					panelLista.setVisible(true);
 					panelAgregarCompra.setVisible(false);  
 					spinnerCantidadCompra.setValue(0);
 					spinnerMonto.setValue(0);
-					tableCompras.setModel(actualizarListaCompras(tableCompras.getModel()));
+					tableCompras.setModel(actualizarListaCompras(tableCompras.getModel(),ultimaSeleccion));
 					tableArticulos.setModel(actualizarListaArticulos(tableArticulos.getModel()));
 					//TODO agregar el modelo de la otra lista de compras
 				}
@@ -411,12 +401,10 @@ public class InterfazArticulos extends JPanel {
 		//Borrar compra
 		btnBorrarCompra.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				DaoTransacciones daoTransacciones = new DaoTransacciones();
 				for(Articulo articulo : empresa.getArticulos()) {
 					if (articulo.getId() == ultimaSeleccion) {
-						daoTransacciones.borrarCompra(ultimaSeleccionCompra);
 						articulo.borrarCompra(ultimaSeleccionCompra);
-						tableCompras.setModel(actualizarListaCompras(tableCompras.getModel()));
+						tableCompras.setModel(actualizarListaCompras(tableCompras.getModel(),ultimaSeleccion));
 					}
 				}
 			}
@@ -450,15 +438,16 @@ public class InterfazArticulos extends JPanel {
 			return modeloSolucion;
 	}
 	
-	private DefaultTableModel actualizarListaCompras(TableModel modelo) {
+	private DefaultTableModel actualizarListaCompras(TableModel modelo,int articuloId) {
 		DefaultTableModel modeloSolucion = (DefaultTableModel) modelo;
 		modeloSolucion.setRowCount(0);
-		DaoTransacciones daoTransacciones = new DaoTransacciones();
 		for(Articulo articulo : empresa.getArticulos()) {
-			for(Compra compra : articulo.getCompras()) {
-				Object[] linea = {compra.getId(),articulo.getDescripcion(),compra.getCantidad(),compra.getMonto()};
-				//TODO agregar fecha
-				modeloSolucion.addRow(linea);
+			if(articulo.getId() == articuloId) {
+				for(Compra compra : articulo.getCompras()) {
+					Object[] linea = {compra.getId(),articulo.getDescripcion(),compra.getCantidad(),compra.getMonto()};
+					//TODO agregar fecha
+					modeloSolucion.addRow(linea);
+				}
 			}
 		}
 		return modeloSolucion;
