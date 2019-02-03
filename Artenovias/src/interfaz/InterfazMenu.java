@@ -30,6 +30,10 @@ public class InterfazMenu extends JPanel {
 		btnArticulos.setBounds(10, 79, 124, 23);
 		add(btnArticulos);
 		
+		JButton btnBalance = new JButton("Balance");
+		btnBalance.setBounds(10, 113, 124, 23);
+		add(btnBalance);
+		
 		//Agregar Cliente
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -55,6 +59,13 @@ public class InterfazMenu extends JPanel {
 				frame.setVisible(true);
 			}
 		});
-
+		//Balance
+		btnBalance.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setVisible(false);
+				frame.setContentPane(new InterfazBalance(frame, empresa));
+				frame.setVisible(true);
+			}
+		});
 	}
 }

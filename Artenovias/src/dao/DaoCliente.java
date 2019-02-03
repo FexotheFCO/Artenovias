@@ -15,6 +15,7 @@ public class DaoCliente {
 	private DaoVestido daoVestido = new DaoVestido();
 	private DaoTransacciones daoTrans = new DaoTransacciones();
 	private DaoRectificacion daoRect = new DaoRectificacion();
+	private DaoArticulo daoArticulo = new DaoArticulo();
 	
 	Connection c = null;
 
@@ -92,7 +93,7 @@ public class DaoCliente {
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				clientes.add(new Cliente(rs.getInt("id"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("mail"),rs.getInt("telefono1"),rs.getInt("telefono2"),rs.getInt("edad"),
-						daoVestido.devolverUnVestido(rs.getInt("idvestido")),daoTrans.devolverTodosLosPagosDeCliente(rs.getInt("id")),daoRect.devolverTodasLasRectificacionesDeCliente(rs.getInt("id"))));
+						daoVestido.devolverUnVestido(rs.getInt("idvestido")),daoTrans.devolverTodosLosPagosDeCliente(rs.getInt("id")),daoRect.devolverTodasLasRectificacionesDeCliente(rs.getInt("id")),daoArticulo.devolverArticulosNecesariosDeCliente(rs.getInt("id"))));
 				}
 
 		} catch (SQLException e) {
@@ -114,7 +115,7 @@ public class DaoCliente {
 			DaoTransacciones daoTrans = new DaoTransacciones();
 			while (rs.next()) {
 				return new Cliente(rs.getInt("id"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("mail"),rs.getInt("telefono1"),rs.getInt("telefono2"),rs.getInt("edad"),
-						daoVestido.devolverUnVestido(rs.getInt("idvestido")),daoTrans.devolverTodosLosPagosDeCliente(rs.getInt("id")),daoRect.devolverTodasLasRectificacionesDeCliente(rs.getInt("id")));
+						daoVestido.devolverUnVestido(rs.getInt("idvestido")),daoTrans.devolverTodosLosPagosDeCliente(rs.getInt("id")),daoRect.devolverTodasLasRectificacionesDeCliente(rs.getInt("id")),daoArticulo.devolverArticulosNecesariosDeCliente(rs.getInt("id")));
 			}
 			
 		} catch(SQLException e) {
@@ -134,7 +135,7 @@ public class DaoCliente {
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				clientes.add(new Cliente(rs.getInt("id"),rs.getString("nombre"),rs.getString("apellido"),rs.getString("mail"),rs.getInt("telefono1"),rs.getInt("telefono2"),rs.getInt("edad"),
-						daoVestido.devolverUnVestido(rs.getInt("idvestido")),daoTrans.devolverTodosLosPagosDeCliente(rs.getInt("id")),daoRect.devolverTodasLasRectificacionesDeCliente(rs.getInt("id"))));
+						daoVestido.devolverUnVestido(rs.getInt("idvestido")),daoTrans.devolverTodosLosPagosDeCliente(rs.getInt("id")),daoRect.devolverTodasLasRectificacionesDeCliente(rs.getInt("id")),daoArticulo.devolverArticulosNecesariosDeCliente(rs.getInt("id"))));
 				}
 
 		} catch (SQLException e) {

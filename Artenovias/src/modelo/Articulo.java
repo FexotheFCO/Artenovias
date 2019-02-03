@@ -11,27 +11,24 @@ public class Articulo {
 	private int id;
 	private int cantidad;
 	private String descripcion;
-	private String lugar;
 	private ArrayList<Compra>compras;
 	
 	DaoTransacciones daoTrans = new DaoTransacciones();
 	
-	public Articulo(int id, int cantidad, String descripcion, String lugar) {
+	public Articulo(int id, int cantidad, String descripcion) {
 		super();
 		this.id = id;
 		this.cantidad = cantidad;
 		this.descripcion = descripcion;
-		this.lugar = lugar;
 		compras = new ArrayList<Compra>();
 	}
 	
 	
-	public Articulo(int id, int cantidad, String descripcion, String lugar, ArrayList<Compra> compras) {
+	public Articulo(int id, int cantidad, String descripcion, ArrayList<Compra> compras) {
 		super();
 		this.id = id;
 		this.cantidad = cantidad;
 		this.descripcion = descripcion;
-		this.lugar = lugar;
 		this.compras = compras;
 	}
 	
@@ -71,12 +68,6 @@ public class Articulo {
 	}
 	public void setCompras(ArrayList<Compra> compras) {
 		this.compras = compras;
-	}
-	public String getLugar() {
-		return lugar;
-	}
-	public void setLugar(String lugar) {
-		this.lugar = lugar;
 	}
 	public int getId() {
 		return id;

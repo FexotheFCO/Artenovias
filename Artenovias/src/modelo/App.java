@@ -1,4 +1,6 @@
 package modelo;
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 
 import dao.DaoArticulo;
@@ -14,13 +16,13 @@ public class App {
 		JFrame frame = new JFrame();
 		DaoArticulo daoArticulo = new DaoArticulo();
 		DaoCliente	daoCliente = new DaoCliente();
-		Empresa empresa = new Empresa(daoArticulo.devolverTodosLosArticulos(),daoCliente.devolverTodosLosClientes());
+		Empresa empresa = new Empresa(daoArticulo.devolverTodosLosArticulosDisponibles(),daoCliente.devolverTodosLosClientes());
 		InterfazMenu interfazMenu = new InterfazMenu(frame,empresa);
-		InterfazBalance intbalance = new InterfazBalance(frame,empresa);
 		
-		frame.setContentPane(intbalance);
+		frame.setContentPane(interfazMenu);
 		frame.setVisible(true);
 		frame.setBounds(0, 0, 400, 200);
+		
 	}
 
 }

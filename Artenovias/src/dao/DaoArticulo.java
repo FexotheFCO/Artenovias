@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import modelo.ArtDisponible;
+import modelo.ArtNecesario;
 import modelo.Articulo;
 import modelo.Cliente;
 
@@ -36,7 +38,7 @@ public class DaoArticulo {
 		}
 	}
 	
-	public int agregarArticulo(Articulo articulo) {
+	public int agregarArticuloDisponible(ArtDisponible articulo) {
 		conectar();
 		int id = 0;
 		try {
@@ -56,7 +58,28 @@ public class DaoArticulo {
 		return id;
 	}
 	
-	public void actualizarArticulo(Articulo articulo) {
+	public int agregarArticuloNecesario(ArtNecesario articulo, int idCliente) {
+		conectar();
+		int id = 0;
+		try {
+			PreparedStatement update = c.prepareStatement("INSERT INTO `artenovias`.`artnecesarios` (`cantidad`,`descripcion`,`disponible`,`idcliente`) VALUES (?,?,?,?);",Statement.RETURN_GENERATED_KEYS);
+			update.setInt(1, articulo.getCantidad());
+			update.setString(2, articulo.getDescripcion());
+			update.setBoolean(3, articulo.isDisponible());
+			update.setInt(4, idCliente);
+			update.executeUpdate();
+			ResultSet rs = update.getGeneratedKeys();
+			while(rs.next()) {
+				id = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		desconectar();
+		return id;
+	}
+	
+	public void actualizarArticuloDisponible(ArtDisponible articulo) {
 		conectar();
 		try {
 			PreparedStatement update = c.prepareStatement("UPDATE `artenovias`.`articulos` SET `cantidad` = (?), `descripcion` = (?), `lugar` = (?) WHERE id = (?)");
@@ -72,10 +95,32 @@ public class DaoArticulo {
 		desconectar();
 	}
 	
-	public void borrarArticulo(int id) {
+	public void actualizarArticuloNecesario(ArtNecesario articulo) {
 		conectar();
 		try {
-			PreparedStatement stm = c.prepareStatement("DELETE FROM `artenovias`.`articulos` WHERE id = (?);");
+			PreparedStatement update = c.prepareStatement("UPDATE `artenovias`.`artnecesarios` SET `cantidad` = (?), `descripcion` = (?), `disponible` = (?) WHERE id = (?)");
+			update.setInt(4, articulo.getId());
+			update.setInt(1, articulo.getCantidad());
+			update.setString(2, articulo.getDescripcion());
+			update.setBoolean(3, articulo.isDisponible());
+			update.executeUpdate();
+			update.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		desconectar();
+	}
+	
+	public void borrarArticulo(int id,boolean esDisponible) {
+		conectar();
+		String sql = null;
+		if(esDisponible) {
+			sql = "DELETE FROM `artenovias`.`articulos` WHERE id = (?);";
+		}else {
+			sql = "DELETE FROM `artenovias`.`artnecesarios` WHERE id = (?);";
+		}
+		try {
+			PreparedStatement stm = c.prepareStatement(sql);
 			stm.setInt(1, id);
 			stm.executeUpdate();
 			stm.close();
@@ -88,8 +133,8 @@ public class DaoArticulo {
 		desconectar();
 	}
 	
-	public ArrayList<Articulo> devolverTodosLosArticulos() {
-		ArrayList<Articulo> articulos = new ArrayList<Articulo>();
+	public ArrayList<ArtDisponible> devolverTodosLosArticulosDisponibles() {
+		ArrayList<ArtDisponible> articulos = new ArrayList<ArtDisponible>();
 		conectar();
 		try {
 			String sql = "SELECT * FROM articulos";
@@ -97,7 +142,7 @@ public class DaoArticulo {
 			ResultSet rs = stmt.executeQuery(sql);
 			DaoTransacciones daoTransacciones = new DaoTransacciones();
 			while (rs.next()) {
-				articulos.add(new Articulo(rs.getInt("id"),rs.getInt("cantidad"),rs.getString("descripcion"),rs.getString("lugar"),daoTransacciones.devolverTodosLasComprasDeArticulo(rs.getInt("id"))));
+				articulos.add(new ArtDisponible(rs.getInt("id"),rs.getInt("cantidad"),rs.getString("descripcion"),rs.getString("lugar"),daoTransacciones.devolverTodosLasComprasDeArticulo(rs.getInt("id"))));
 				}
 
 		} catch (SQLException e) {
@@ -108,21 +153,80 @@ public class DaoArticulo {
 		return articulos;
 	}
 	
-	public Articulo devolverArticulo(int id) {
+	public ArrayList<ArtNecesario> devolverTodosLosArticulosNecesario() {
+		ArrayList<ArtNecesario> articulos = new ArrayList<ArtNecesario>();
 		conectar();
-		Articulo solucion = new Articulo(0, 0, null, null);
+		try {
+			String sql = "SELECT * FROM artnecesarios";
+			Statement stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			DaoTransacciones daoTransacciones = new DaoTransacciones();
+			while (rs.next()) {
+				articulos.add(new ArtNecesario(rs.getInt("id"),rs.getInt("cantidad"),rs.getString("descripcion"),daoTransacciones.devolverTodosLasComprasDeArticulo(rs.getInt("id")),rs.getBoolean("disponible")));
+				}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		desconectar();
+		return articulos;
+	}
+	
+	public ArtDisponible devolverArticuloDisponible(int id) {
+		conectar();
+		ArtDisponible solucion = new ArtDisponible(0, 0, null, null);
 		try {
 			PreparedStatement update = c.prepareStatement("SELECT * FROM articulos WHERE id = (?)");
 			update.setInt(1, id);
 			ResultSet rs = update.executeQuery();
 			DaoTransacciones daoTransacciones = new DaoTransacciones();
 			while (rs.next()) {
-				solucion = new Articulo(rs.getInt("id"),rs.getInt("cantidad"),rs.getString("descripcion"),rs.getString("lugar"),daoTransacciones.devolverTodosLasComprasDeArticulo(rs.getInt("id")));
+				solucion = new ArtDisponible(rs.getInt("id"),rs.getInt("cantidad"),rs.getString("descripcion"),rs.getString("lugar"),daoTransacciones.devolverTodosLasComprasDeArticulo(rs.getInt("id")));
 				}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		desconectar();
 		return solucion;
+	}
+	
+	public ArtNecesario devolverArticuloNecesario(int id) {
+		conectar();
+		ArtNecesario solucion = new ArtNecesario(0, 0, null, null,true);
+		try {
+			PreparedStatement update = c.prepareStatement("SELECT * FROM artnecesarios WHERE id = (?)");
+			update.setInt(1, id);
+			ResultSet rs = update.executeQuery();
+			DaoTransacciones daoTransacciones = new DaoTransacciones();
+			while (rs.next()) {
+				solucion = new ArtNecesario(rs.getInt("id"),rs.getInt("cantidad"),rs.getString("descripcion"),daoTransacciones.devolverTodosLasComprasDeArticulo(rs.getInt("id")),rs.getBoolean("disponible"));
+				}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		desconectar();
+		return solucion;
+	}
+	//devolverArticulosNecesariosdeCliente 
+	public ArrayList<ArtNecesario> devolverArticulosNecesariosDeCliente(int idCliente){
+		ArrayList<ArtNecesario> articulos = new ArrayList<ArtNecesario>();
+		conectar();
+		try {
+			String sql = "SELECT * FROM artnecesarios WHERE idcliente = (?)";
+			PreparedStatement update = c.prepareStatement(sql);
+			update.setInt(1, idCliente);
+			ResultSet rs = update.executeQuery();
+			DaoTransacciones daoTransacciones = new DaoTransacciones();
+			while (rs.next()) {
+				articulos.add(new ArtNecesario(rs.getInt("id"),rs.getInt("cantidad"),rs.getString("descripcion"),daoTransacciones.devolverTodosLasComprasDeArticulo(rs.getInt("id")),rs.getBoolean("disponible")));
+				}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		desconectar();
+		return articulos;
 	}
 }

@@ -3,6 +3,7 @@ package interfaz;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import modelo.ArtDisponible;
 import modelo.Articulo;
 import modelo.Compra;
 import modelo.Empresa;
@@ -259,7 +260,7 @@ public class InterfazArticulos extends JPanel {
 				btnConfirmar.setVisible(false);
 				btnConfirmarEditar.setVisible(true);
 				DaoArticulo daoArticulo = new DaoArticulo();
-				Articulo articulo = daoArticulo.devolverArticulo(ultimaSeleccion);
+				ArtDisponible articulo = daoArticulo.devolverArticuloDisponible(ultimaSeleccion);
 				textFieldDescripcion.setText(articulo.getDescripcion());
 				textFieldLugar.setText(articulo.getLugar());
 				spinnerCantidad.setValue(articulo.getCantidad());
@@ -301,9 +302,9 @@ public class InterfazArticulos extends JPanel {
 		//Restar
 		buttonSacarCantidad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Articulo articuloSolucion = null;
+				ArtDisponible articuloSolucion = null;
 				System.out.println(ultimaSeleccion);
-				for(Articulo articulo : empresa.getArticulos()) {
+				for(ArtDisponible articulo : empresa.getArticulos()) {
 					if(articulo.getId() == ultimaSeleccion) {
 						int cantidad;
 						cantidad = articulo.getCantidad();
@@ -321,8 +322,8 @@ public class InterfazArticulos extends JPanel {
 		//Sumar
 		buttonAgregarCantidad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Articulo articuloSolucion = null;
-				for(Articulo articulo : empresa.getArticulos()) {
+				ArtDisponible articuloSolucion = null;
+				for(ArtDisponible articulo : empresa.getArticulos()) {
 					if(articulo.getId() == ultimaSeleccion) {
 						int cantidad;
 						cantidad = articulo.getCantidad();
@@ -339,7 +340,7 @@ public class InterfazArticulos extends JPanel {
 		//Confirmar Edicion
 		btnConfirmarEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				empresa.editarArticulo(new Articulo(ultimaSeleccion,(int)spinnerCantidad.getValue(),textFieldDescripcion.getText(),textFieldLugar.getText()));
+				empresa.editarArticulo(new ArtDisponible(ultimaSeleccion,(int)spinnerCantidad.getValue(),textFieldDescripcion.getText(),textFieldLugar.getText()));
 				panelLista.setVisible(true);
 				panelEdicion.setVisible(false);
 				panelAgregarArticulo.setVisible(false);
@@ -354,7 +355,7 @@ public class InterfazArticulos extends JPanel {
 		btnConfirmar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if((int) spinnerCantidad.getValue() >= 0 && !textFieldDescripcion.getText().isEmpty() && !textFieldLugar.getText().isEmpty()) {
-					empresa.agregarArticulo(new Articulo(0,(int) spinnerCantidad.getValue(),textFieldDescripcion.getText(),textFieldLugar.getText()));
+					empresa.agregarArticulo(new ArtDisponible(0,(int) spinnerCantidad.getValue(),textFieldDescripcion.getText(),textFieldLugar.getText()));
 					panelLista.setVisible(true);
 					panelAgregarArticulo.setVisible(false);
 					tableArticulos.setModel(actualizarListaArticulos(tableArticulos.getModel()));
@@ -431,7 +432,7 @@ public class InterfazArticulos extends JPanel {
 	private DefaultTableModel actualizarListaArticulos(TableModel modelo) {
 			DefaultTableModel modeloSolucion = (DefaultTableModel) modelo;
 			modeloSolucion.setRowCount(0);
-			for(Articulo articulo : empresa.getArticulos()) {
+			for(ArtDisponible articulo : empresa.getArticulos()) {
 				Object[] linea = {articulo.getId(),articulo.getDescripcion(),articulo.getCantidad(),articulo.getLugar()};
 				modeloSolucion.addRow(linea);
 				}

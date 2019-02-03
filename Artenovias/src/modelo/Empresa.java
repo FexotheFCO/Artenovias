@@ -12,12 +12,13 @@ public class Empresa {
 	private String nombre;
 	
 	private ArrayList<Cliente>clientes;
-	private ArrayList<Articulo>articulos;
+	private ArrayList<ArtDisponible>articulos;
+	private ArrayList<ArtNecesario>artNecesarios;
 	
 	DaoArticulo daoArticulo = new DaoArticulo();
 	DaoCliente daoCliente = new DaoCliente();
 	
-	public Empresa(ArrayList<Articulo> articulos,ArrayList<Cliente> clientes) {
+	public Empresa(ArrayList<ArtDisponible> articulos,ArrayList<Cliente> clientes) {
 		super();
 		this.articulos = articulos;
 		this.clientes = clientes;
@@ -42,10 +43,10 @@ public class Empresa {
 	public void setClientes(ArrayList<Cliente> clientes) {
 		this.clientes = clientes;
 	}
-	public ArrayList<Articulo> getArticulos() {
+	public ArrayList<ArtDisponible> getArticulos() {
 		return articulos;
 	}
-	public void setArticulos(ArrayList<Articulo> articulos) {
+	public void setArticulos(ArrayList<ArtDisponible> articulos) {
 		this.articulos = articulos;
 	}
 
@@ -66,8 +67,13 @@ public class Empresa {
 		return daoCliente.busquedaDeClientes(busqueda);
 	}
 	
-	public void agregarArticulo(Articulo articulo) {
-		articulo.setId(daoArticulo.agregarArticulo(articulo));
+	private void actualizarClientes() {
+		clientes.remove(clientes);
+		clientes = daoCliente.devolverTodosLosClientes();
+	}
+	
+	public void agregarArticulo(ArtDisponible articulo) {
+		articulo.setId(daoArticulo.agregarArticuloDisponible(articulo));
 		articulos.add(articulo);
 		JOptionPane.showMessageDialog(null, "El articulo se a ingresado correctamente al sistema", "Articulo Ingresado", 1);
 	}
@@ -83,7 +89,7 @@ public class Empresa {
 				}
 				index++;
 			}
-			daoArticulo.borrarArticulo(id);
+			daoArticulo.borrarArticulo(id,true);
 			JOptionPane.showMessageDialog(null, "El articulo se a eliminado correctamente del sistema", "Articulo Borrado", 1);
 		}else {
 			JOptionPane.showMessageDialog(null, "Se cancelo la eliminacion del pago", "Eliminacion Cancelada", 1);
@@ -92,18 +98,24 @@ public class Empresa {
 	
 	private void actualizarArticulos(){
 		articulos.removeAll(articulos);
-		articulos = daoArticulo.devolverTodosLosArticulos();
+		articulos = daoArticulo.devolverTodosLosArticulosDisponibles();
 	}
 	
-	private void actualizarClientes() {
-		clientes.remove(clientes);
-		clientes = daoCliente.devolverTodosLosClientes();
-	}
-	
-	public void editarArticulo(Articulo articulo) {
-		daoArticulo.actualizarArticulo(articulo);
+	public void editarArticulo(ArtDisponible articulo) {
+		daoArticulo.actualizarArticuloDisponible(articulo);
 		actualizarArticulos();
 		JOptionPane.showMessageDialog(null, "El articulo se a editado correctamente", "Articulo Editado", 1);
+	}
+	
+	public ArtDisponible devolverUnArticulo(int id) {
+		ArtDisponible solucion = null;
+		for(ArtDisponible articulo : articulos) {
+			if (articulo.getId() == id) {
+				solucion = articulo;
+				break;
+			}
+		}
+		return solucion;
 	}
 	
 	public ArrayList<Pago> devolverTodosLosPagos() {

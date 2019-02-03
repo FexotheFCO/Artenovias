@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 import dao.DaoCliente;
+import modelo.ArtDisponible;
+import modelo.ArtNecesario;
 import modelo.Cliente;
 import modelo.Empresa;
 import modelo.Pago;
@@ -24,6 +26,11 @@ import javax.swing.table.TableModel;
 import javax.swing.text.DefaultCaret;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.DropMode;
+import javax.swing.JCheckBox;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class InterfazCliente extends JPanel {
 	private JTextField textFieldNombre;
@@ -36,6 +43,9 @@ public class InterfazCliente extends JPanel {
     JLabel labelNumeroFaltante = new JLabel("");
     JLabel lblNumeroPagado = new JLabel("");
     JLabel labelNumeroTotal = new JLabel("");
+    private JTable tableArticulosNecesarios;
+    private JTextField textFieldBuscador;
+    private JTable tableArticulosDisponibles;
     
 	public InterfazCliente(JFrame frame,Cliente cliente,Empresa empresa) {
 		setLayout(null);
@@ -65,12 +75,22 @@ public class InterfazCliente extends JPanel {
 		panelAgregarPago.setLayout(null);
 		panelAgregarPago.setVisible(false);
 		
+		JPanel panelArticulos = new JPanel();
+		panelArticulos.setBounds(374, 309, 327, 509);
+		add(panelArticulos);
+		panelArticulos.setLayout(null);
+		
 		JPanel panelRectAgregar = new JPanel();
 		panelRectAgregar.setBounds(120, 504, 244, 184);
 		add(panelRectAgregar);
 		panelRectAgregar.setLayout(null);
 		panelRectAgregar.setVisible(false);
 		
+		JPanel panelAgregarArticulo = new JPanel();
+		panelAgregarArticulo.setBounds(10, 256, 208, 231);
+		panelArticulos.add(panelAgregarArticulo);
+		panelAgregarArticulo.setLayout(null);
+		panelAgregarArticulo.setVisible(false);
 		
 		//ScrolPanel
 		JScrollPane scrollPaneListaPagos = new JScrollPane();
@@ -86,6 +106,14 @@ public class InterfazCliente extends JPanel {
 		JScrollPane scrollPaneListaRect = new JScrollPane();
 		scrollPaneListaRect.setBounds(120, 345, 244, 148);
 		add(scrollPaneListaRect);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 14, 208, 231);
+		panelArticulos.add(scrollPane);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 63, 188, 123);
+		panelAgregarArticulo.add(scrollPane_1);
 		
 		//Areas y Tablas
 		JTextArea textArea = new JTextArea("",5,20);
@@ -142,6 +170,14 @@ public class InterfazCliente extends JPanel {
 		lblEdadUser.setBounds(10, 73, 119, 14);
 		panelCliente.add(lblEdadUser);
 		
+		JLabel lblArticuloCantidad = new JLabel("Cantidad");
+		lblArticuloCantidad.setBounds(10, 11, 69, 14);
+		panelAgregarArticulo.add(lblArticuloCantidad);
+		
+		JLabel lblBuscador = new JLabel("Buscador");
+		lblBuscador.setBounds(10, 38, 69, 14);
+		panelAgregarArticulo.add(lblBuscador);
+		
 		//Rectificacion
 		JLabel lblRectificacion = new JLabel("Rectificacion");
 		lblRectificacion.setHorizontalAlignment(SwingConstants.CENTER);
@@ -188,6 +224,20 @@ public class InterfazCliente extends JPanel {
 		lblEdadUser.setText(String.valueOf(cliente.getEdad()));
 		
 		//Botones
+		JButton btnAgregarArticulo = new JButton("Agregar");
+		btnAgregarArticulo.setBounds(228, 11, 89, 23);
+		panelArticulos.add(btnAgregarArticulo);
+		
+		JButton btnBorrarArticulo = new JButton("Borrar");
+		btnBorrarArticulo.setBounds(228, 45, 89, 23);
+		panelArticulos.add(btnBorrarArticulo);
+		btnBorrarArticulo.setEnabled(false);
+		
+		JButton btnEditarArticulo = new JButton("Editar");
+		btnEditarArticulo.setBounds(228, 79, 89, 23);
+		panelArticulos.add(btnEditarArticulo);
+		btnEditarArticulo.setEnabled(false);
+		
 		JButton btnEdit = new JButton("Edit");
 		btnEdit.setBounds(33, 173, 73, 23);
 		panelCliente.add(btnEdit);
@@ -244,6 +294,23 @@ public class InterfazCliente extends JPanel {
 		btnBorrarRect.setBounds(10, 413, 89, 23);
 		add(btnBorrarRect);
 		
+		JButton btnAgregarArticuloNecesario = new JButton("Agregar");
+		btnAgregarArticuloNecesario.setBounds(109, 197, 89, 23);
+		panelAgregarArticulo.add(btnAgregarArticuloNecesario);
+		
+		JButton btnCancelarAgregarArticulo = new JButton("Cancelar");
+		btnCancelarAgregarArticulo.setBounds(10, 197, 89, 23);
+		panelAgregarArticulo.add(btnCancelarAgregarArticulo);
+		
+		JButton btnEditar = new JButton("Editar");
+		btnEditar.setBounds(109, 197, 89, 23);
+		panelAgregarArticulo.add(btnEditar);
+		
+		JButton btnUsarArticulo = new JButton("Usar");
+		btnUsarArticulo.setBounds(228, 113, 89, 23);
+		panelArticulos.add(btnUsarArticulo);
+		btnUsarArticulo.setEnabled(false);
+		
 		//TextField
 		textFieldNombre = new JTextField();
 		textFieldNombre.setColumns(10);
@@ -268,6 +335,11 @@ public class InterfazCliente extends JPanel {
 		panelAgregarPago.add(textFieldDescripcion);
 		textFieldDescripcion.setColumns(10);
 		
+		textFieldBuscador = new JTextField();
+		textFieldBuscador.setBounds(89, 35, 109, 20);
+		panelAgregarArticulo.add(textFieldBuscador);
+		textFieldBuscador.setColumns(10);
+		
 		//Spinners
 		JSpinner spinnerEdad = new JSpinner();
 		spinnerEdad.setBounds(10, 61, 119, 14);
@@ -287,6 +359,10 @@ public class InterfazCliente extends JPanel {
 		JSpinner spinnerMonto = new JSpinner();
 		spinnerMonto.setBounds(176, 57, 86, 20);
 		panelAgregarPago.add(spinnerMonto);
+		
+		JSpinner spinnerCantidad = new JSpinner();
+		spinnerCantidad.setBounds(89, 8, 109, 20);
+		panelAgregarArticulo.add(spinnerCantidad);
 		
 		tableRect = new JTable();
 		tableRect.setModel(new DefaultTableModel(
@@ -318,6 +394,29 @@ public class InterfazCliente extends JPanel {
 		scrollPaneListaPagos.setViewportView(tablePagos);
 		tablePagos.setModel(actualizarTablaPagos(tablePagos.getModel(), cliente));
 		
+		tableArticulosNecesarios = new JTable();
+		tableArticulosNecesarios.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Id", "Descripcion", "Cantidad", "Disponible"
+			}
+		));
+		scrollPane.setViewportView(tableArticulosNecesarios);
+		tableArticulosNecesarios.setModel(actualizarTablaArticulosNecesarios(tableArticulosNecesarios.getModel(),cliente));
+		
+		tableArticulosDisponibles = new JTable();
+		tableArticulosDisponibles.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"id", "Descripcion"
+			}
+		));
+		scrollPane_1.setViewportView(tableArticulosDisponibles);
+		tableArticulosDisponibles.setModel(actualizarTablaArticulosDisponibles(tableArticulosDisponibles.getModel(), empresa));
+		
+		//PAGO
 		//Borrar Pago
 		btnBorrarPago.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -464,6 +563,125 @@ public class InterfazCliente extends JPanel {
 			}
 		});
 		
+		//Articulos
+		//mostrar interfaz agregar Articulos
+		btnAgregarArticulo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				panelAgregarArticulo.setVisible(true);
+				scrollPane.setVisible(false);
+				btnAgregarArticuloNecesario.setVisible(true);
+				btnAgregarArticuloNecesario.setEnabled(false);
+			}
+		});
+		//cancelar volver a ocultar interfaz
+		btnCancelarAgregarArticulo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelAgregarArticulo.setVisible(false);
+				panelArticulos.setVisible(true);
+				scrollPane.setVisible(true);
+			}
+		});
+		//Agregar Articulo
+		btnAgregarArticuloNecesario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int filaSelecionada = tableArticulosDisponibles.getSelectedRow();
+				Object valor = tableArticulosDisponibles.getValueAt(filaSelecionada, 0);
+				if((int)valor > 0 && (int)spinnerCantidad.getValue() > 0) {
+					ArtDisponible articuloDisp = null;
+					articuloDisp = empresa.devolverUnArticulo((int) valor);
+					cliente.agregarArticulo(new ArtNecesario(0,(int)spinnerCantidad.getValue(),articuloDisp.getDescripcion(),false));
+					actualizarTablaArticulosNecesarios(tableArticulosNecesarios.getModel(), cliente);
+					panelAgregarArticulo.setVisible(false);
+					panelArticulos.setVisible(true);
+					scrollPane.setVisible(true);
+					btnBorrarArticulo.setEnabled(false);
+					btnEditarArticulo.setEnabled(false);
+					btnUsarArticulo.setEnabled(false);
+				}
+			}
+		});
+		//Borrar Articulo
+		btnBorrarArticulo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int filaSelecionada = tableArticulosNecesarios.getSelectedRow();
+				Object valor = tableArticulosNecesarios.getValueAt(filaSelecionada, 0);
+				cliente.borrarArticulo((int) valor);
+				tableArticulosNecesarios.setModel(actualizarTablaArticulosNecesarios(tableArticulosNecesarios.getModel(), cliente));
+				btnBorrarArticulo.setEnabled(false);
+				btnEditarArticulo.setEnabled(false);
+				btnUsarArticulo.setEnabled(false);
+			}
+		});
+		//Editar Articulo Interfaz
+		btnEditarArticulo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelAgregarArticulo.setVisible(true);
+				scrollPane.setVisible(false);
+				btnAgregarArticuloNecesario.setVisible(false);
+				btnEditar.setVisible(true);
+				btnEditar.setEnabled(false);
+			}
+		});
+		//Editar Articulo 
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int filaSelecionada = tableArticulosNecesarios.getSelectedRow();
+				Object valor = tableArticulosNecesarios.getValueAt(filaSelecionada, 0);
+				ArtNecesario articulo = cliente.devolverArticulo((int)valor);
+				int filaSelecionada2 = tableArticulosDisponibles.getSelectedRow();
+				Object valor2 = tableArticulosDisponibles.getValueAt(filaSelecionada2, 0);
+				ArtDisponible articuloDisp = empresa.devolverUnArticulo((int) valor2);
+				cliente.editarArticulo(new ArtNecesario(articulo.getId(),(int)spinnerCantidad.getValue(),articuloDisp.getDescripcion(),false));
+				actualizarTablaArticulosNecesarios(tableArticulosNecesarios.getModel(), cliente);
+				panelAgregarArticulo.setVisible(false);
+				panelArticulos.setVisible(true);
+				scrollPane.setVisible(true);
+				btnBorrarArticulo.setEnabled(false);
+				btnEditarArticulo.setEnabled(false);
+				btnUsarArticulo.setEnabled(false);
+			}
+		});
+		//TODO usar esta verga, y no mostrar los botones para no bugear, lo mismo con rectificaciones
+		btnUsarArticulo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		//focus para el boton
+		tableArticulosDisponibles.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				btnAgregarArticuloNecesario.setEnabled(true);
+				btnEditar.setEnabled(true);
+			}
+		});
+		tableArticulosNecesarios.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnBorrarArticulo.setEnabled(true);
+				btnEditarArticulo.setEnabled(true);
+				btnUsarArticulo.setEnabled(true);
+			}
+		});
+	}
+	
+	private DefaultTableModel actualizarTablaArticulosNecesarios(TableModel modelo, Cliente cliente) {
+		DefaultTableModel modeloSolucion = (DefaultTableModel) modelo;
+		modeloSolucion.setRowCount(0);
+		for(ArtNecesario articulo : cliente.getArticulos()) {
+			Object[] linea = {articulo.getId(),articulo.getDescripcion(),articulo.getCantidad(),articulo.isDisponible()};
+			modeloSolucion.addRow(linea);
+			}
+		return modeloSolucion;
+	}
+	
+	private DefaultTableModel actualizarTablaArticulosDisponibles(TableModel modelo, Empresa empresa) {
+		DefaultTableModel modeloSolucion = (DefaultTableModel) modelo;
+		modeloSolucion.setRowCount(0);
+		for(ArtDisponible articulo : empresa.getArticulos()) {
+			Object[] linea = {articulo.getId(),articulo.getDescripcion()};
+			modeloSolucion.addRow(linea);
+			}
+		return modeloSolucion;
 	}
 	
 	private DefaultTableModel actualizarTablaPagos(TableModel modelo, Cliente cliente) {
