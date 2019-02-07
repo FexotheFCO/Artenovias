@@ -21,8 +21,6 @@ public class App {
 		
 		frame.setContentPane(interfazMenu);
 		frame.setVisible(true);
-		frame.setBounds(0, 0, 400, 200);
-		
 	}
 
 }

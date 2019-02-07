@@ -8,6 +8,10 @@ import javax.swing.JFrame;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class InterfazMenu extends JPanel {
@@ -16,23 +20,35 @@ public class InterfazMenu extends JPanel {
 	 * Create the panel.
 	 */
 	public InterfazMenu(JFrame frame, Empresa empresa) {
+		setBackground(Color.PINK);
 		setLayout(null);
+		frame.setBounds(0, 0, 200, 250);
 		
-		JButton btnAgregar = new JButton("Agregar Cliente");
-		btnAgregar.setBounds(10, 11, 124, 23);
+		JButton btnAgregar = new JButton("Nuevo Cliente");
+		btnAgregar.setBackground(Color.WHITE);
+		btnAgregar.setBounds(10, 59, 124, 23);
 		add(btnAgregar);
 		
 		JButton btnVerClientes = new JButton("Ver Clientes");
-		btnVerClientes.setBounds(10, 45, 124, 23);
+		btnVerClientes.setBackground(Color.WHITE);
+		btnVerClientes.setBounds(10, 93, 124, 23);
 		add(btnVerClientes);
 		
 		JButton btnArticulos = new JButton("Articulos");
-		btnArticulos.setBounds(10, 79, 124, 23);
+		btnArticulos.setBackground(Color.WHITE);
+		btnArticulos.setBounds(10, 127, 124, 23);
 		add(btnArticulos);
 		
 		JButton btnBalance = new JButton("Balance");
-		btnBalance.setBounds(10, 113, 124, 23);
+		btnBalance.setBackground(Color.WHITE);
+		btnBalance.setBounds(10, 161, 124, 23);
 		add(btnBalance);
+		
+		JLabel lblArtenovias = new JLabel("Artenovias");
+		lblArtenovias.setHorizontalAlignment(SwingConstants.CENTER);
+		lblArtenovias.setFont(new Font("Chaparral Pro Light", Font.ITALIC, 28));
+		lblArtenovias.setBounds(10, 11, 124, 48);
+		add(lblArtenovias);
 		
 		//Agregar Cliente
 		btnAgregar.addActionListener(new ActionListener() {

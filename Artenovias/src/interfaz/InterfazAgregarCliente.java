@@ -15,6 +15,9 @@ import javax.swing.JFrame;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
+import java.awt.Font;
+import javax.swing.UIManager;
 
 @SuppressWarnings("serial")
 public class InterfazAgregarCliente extends JPanel {
@@ -27,67 +30,76 @@ public class InterfazAgregarCliente extends JPanel {
 	 * Create the panel.
 	 */
 	public InterfazAgregarCliente(JFrame frame,Empresa empresa) {
+		setBackground(new Color(255, 182, 193));
 		setLayout(null);
 		frame.setBounds(0, 0, 300, 300);
 		
 		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(10, 11, 72, 14);
+		lblNombre.setBounds(10, 11, 72, 20);
 		add(lblNombre);
+		lblNombre.setFont(new Font("Calibri", Font.PLAIN, 20));
 		
 		JLabel lblApellido = new JLabel("Apellido");
-		lblApellido.setBounds(10, 36, 72, 14);
+		lblApellido.setBounds(10, 42, 72, 20);
 		add(lblApellido);
+		lblApellido.setFont(new Font("Calibri", Font.PLAIN, 20));
 		
 		JLabel lblMail = new JLabel("Mail");
-		lblMail.setBounds(10, 61, 72, 14);
+		lblMail.setBounds(10, 73, 72, 20);
 		add(lblMail);
+		lblMail.setFont(new Font("Calibri", Font.PLAIN, 20));
 		
 		JLabel lblTelefono = new JLabel("Telefono");
-		lblTelefono.setBounds(10, 111, 72, 14);
+		lblTelefono.setBounds(10, 135, 99, 20);
 		add(lblTelefono);
+		lblTelefono.setFont(new Font("Calibri", Font.PLAIN, 20));
 		
 		JLabel lblEdad = new JLabel("Edad");
-		lblEdad.setBounds(10, 86, 72, 14);
+		lblEdad.setBounds(10, 104, 72, 20);
 		add(lblEdad);
+		lblEdad.setFont(new Font("Calibri", Font.PLAIN, 20));
 		
 		JLabel lblTelefono_1 = new JLabel("Telefono 2");
-		lblTelefono_1.setBounds(10, 136, 72, 14);
+		lblTelefono_1.setBounds(10, 165, 99, 20);
 		add(lblTelefono_1);
+		lblTelefono_1.setFont(new Font("Calibri", Font.PLAIN, 20));
 		
 		textFieldNombre = new JTextField();
-		textFieldNombre.setBounds(91, 11, 86, 14);
+		textFieldNombre.setBounds(138, 11, 107, 20);
 		add(textFieldNombre);
 		textFieldNombre.setColumns(10);
 		
 		textFieldApellido = new JTextField();
-		textFieldApellido.setColumns(10);
-		textFieldApellido.setBounds(91, 36, 86, 14);
+		textFieldApellido.setBounds(138, 42, 107, 20);
 		add(textFieldApellido);
+		textFieldApellido.setColumns(10);
 		
 		textFieldMail = new JTextField();
-		textFieldMail.setColumns(10);
-		textFieldMail.setBounds(91, 61, 86, 14);
+		textFieldMail.setBounds(138, 73, 107, 20);
 		add(textFieldMail);
+		textFieldMail.setColumns(10);
 		
 		JSpinner spinnerEdad = new JSpinner();
-		spinnerEdad.setBounds(91, 86, 86, 14);
+		spinnerEdad.setBounds(138, 104, 107, 20);
 		add(spinnerEdad);
 		
 		JSpinner spinnerTelefono = new JSpinner();
-		spinnerTelefono.setBounds(91, 111, 86, 14);
+		spinnerTelefono.setBounds(138, 135, 107, 20);
 		add(spinnerTelefono);
 		
 		JSpinner spinnerTelefono2 = new JSpinner();
-		spinnerTelefono2.setBounds(91, 136, 86, 14);
+		spinnerTelefono2.setBounds(138, 166, 107, 20);
 		add(spinnerTelefono2);
 		
-		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.setBounds(42, 161, 89, 23);
-		add(btnAgregar);
-		
 		JButton btnAtras = new JButton("Atras");
-		btnAtras.setBounds(42, 195, 89, 23);
+		btnAtras.setBounds(45, 238, 163, 23);
 		add(btnAtras);
+		btnAtras.setBackground(Color.WHITE);
+		
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.setBounds(45, 204, 163, 23);
+		add(btnAgregar);
+		btnAgregar.setBackground(Color.WHITE);
 		
 		//agregar	
 		btnAgregar.addActionListener(new ActionListener() {
